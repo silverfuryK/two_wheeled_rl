@@ -61,7 +61,7 @@ while 1:
     dt = datetime.now()
     t = (dt.second / 60.) * 2. * math.pi
   else:
-    t = t + 0.1
+    t = t + 00.1
 
   if (useSimulation and useRealTimeSimulation == 0):
     p.stepSimulation()
