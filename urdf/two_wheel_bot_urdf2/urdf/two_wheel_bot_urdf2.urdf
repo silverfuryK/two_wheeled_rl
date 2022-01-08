@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="two_wheel_bot_urdf2">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="2.14335328662797E-06 0.00342348567006379 0.00381617057001103"
+        rpy="0 0 0" />
+      <mass
+        value="5.2298658429766" />
+      <inertia
+        ixx="0.025489005982237"
+        ixy="5.21058705317494E-07"
+        ixz="4.66611982919143E-08"
+        iyy="0.0217210539398496"
+        iyz="0.00138741262174413"
+        izz="0.0300096457219979" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link1L">
+    <inertial>
+      <origin
+        xyz="0.0108777063074832 -0.0397889475658975 0.00778255875143549"
+        rpy="0 0 0" />
+      <mass
+        value="0.0920897104333794" />
+      <inertia
+        ixx="0.000307092569540675"
+        ixy="7.49468235007504E-05"
+        ixz="-2.22126594452678E-06"
+        iyy="5.34381631310313E-05"
+        iyz="8.12504324886133E-06"
+        izz="0.00035581745234253" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link1L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.854901960784314 0.533333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link1L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint1L"
+    type="revolute">
+    <origin
+      xyz="-0.095 0 0"
+      rpy="1.5708 0 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="link1L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link2L">
+    <inertial>
+      <origin
+        xyz="-0.00515284036557172 0.027572931554392 0.0085062852456701"
+        rpy="0 0 0" />
+      <mass
+        value="0.0420641577581413" />
+      <inertia
+        ixx="5.99401018480782E-05"
+        ixy="9.87270978817433E-06"
+        ixz="3.23762508752024E-07"
+        iyy="8.95608912295947E-06"
+        iyz="-1.73245838418425E-06"
+        izz="6.71261903455831E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link2L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.854901960784314 0.803921568627451 0.529411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link2L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint2L"
+    type="revolute">
+    <origin
+      xyz="0 0 0.01"
+      rpy="0 0 -1.3039" />
+    <parent
+      link="link1L" />
+    <child
+      link="link2L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link3L">
+    <inertial>
+      <origin
+        xyz="-0.0106862513365372 -0.0571823025304896 -0.00887815058461651"
+        rpy="0 0 0" />
+      <mass
+        value="0.0560073858489449" />
+      <inertia
+        ixx="0.000218764528266537"
+        ixy="-3.93869721743533E-05"
+        ixz="-6.71436973865583E-07"
+        iyy="1.53648605332619E-05"
+        iyz="-3.59287003090283E-06"
+        izz="0.000232080271062819" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link3L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.862745098039216 0.549019607843137 0.545098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link3L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint3L"
+    type="revolute">
+    <origin
+      xyz="-0.014696 0.078639 0.01"
+      rpy="0 0 1.7555" />
+    <parent
+      link="link2L" />
+    <child
+      link="link3L" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link4L">
+    <inertial>
+      <origin
+        xyz="0.0203083925778099 -0.108670534850872 0.00878355121424736"
+        rpy="0 0 0" />
+      <mass
+        value="0.103303737580571" />
+      <inertia
+        ixx="0.000773569071719839"
+        ixy="0.000141436809479321"
+        ixz="-1.62865032492976E-06"
+        iyy="4.31701995748469E-05"
+        iyz="8.71493404596558E-06"
+        izz="0.00081280999513764" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.545098039215686 0.615686274509804 0.858823529411765 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint4L"
+    type="revolute">
+    <origin
+      xyz="-0.027555 -0.14745 -0.01"
+      rpy="0 0 -1.7555" />
+    <parent
+      link="link3L" />
+    <child
+      link="link4L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="wheelL">
+    <inertial>
+      <origin
+        xyz="-6.10622663543836E-16 7.49400541621981E-16 0.0111042006258997"
+        rpy="0 0 0" />
+      <mass
+        value="0.126219698224412" />
+      <inertia
+        ixx="0.000106473363883809"
+        ixy="6.7762635780344E-21"
+        ixz="-2.48860382094019E-20"
+        iyy="0.000106473363883809"
+        iyz="-5.86012409769799E-21"
+        izz="0.000208789081658998" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/wheelL.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/wheelL.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheeljointL"
+    type="continuous">
+    <origin
+      xyz="0.042251 -0.22609 0.01"
+      rpy="0 0 -1.386" />
+    <parent
+      link="link4L" />
+    <child
+      link="wheelL" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="link4_1L">
+    <inertial>
+      <origin
+        xyz="0.00561238240027584 -0.030031948362666 0.00878355121424738"
+        rpy="0 0 0" />
+      <mass
+        value="0.103303737580571" />
+      <inertia
+        ixx="0.000773569071719824"
+        ixy="0.000141436809479358"
+        ixz="-1.62865032493019E-06"
+        iyy="4.3170199574861E-05"
+        iyz="8.7149340459655E-06"
+        izz="0.00081280999513764" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4_1L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.545098039215686 0.615686274509804 0.858823529411765 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4_1L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint4_1L"
+    type="revolute">
+    <origin
+      xyz="0.039556 -0.14469 0.01"
+      rpy="0 0 -1.3039" />
+    <parent
+      link="link1L" />
+    <child
+      link="link4_1L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link1R">
+    <inertial>
+      <origin
+        xyz="-0.0108777063074823 -0.0397889475658978 0.00778255875143549"
+        rpy="0 0 0" />
+      <mass
+        value="0.0920897104333794" />
+      <inertia
+        ixx="0.000307092569540679"
+        ixy="-7.49468235007446E-05"
+        ixz="2.22126594452659E-06"
+        iyy="5.34381631310279E-05"
+        iyz="8.12504324886132E-06"
+        izz="0.00035581745234253" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link1R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.854901960784314 0.533333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link1R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint1R"
+    type="revolute">
+    <origin
+      xyz="0.095 0 0"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="link1R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link2R">
+    <inertial>
+      <origin
+        xyz="-0.00515284036557377 -0.0275729315543916 0.00850628524567011"
+        rpy="0 0 0" />
+      <mass
+        value="0.0420641577581413" />
+      <inertia
+        ixx="5.99401018480767E-05"
+        ixy="-9.87270978817812E-06"
+        ixz="3.23762508752149E-07"
+        iyy="8.95608912296094E-06"
+        iyz="1.73245838418421E-06"
+        izz="6.71261903455832E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link2R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.854901960784314 0.803921568627451 0.529411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link2R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint2R"
+    type="revolute">
+    <origin
+      xyz="0 0 0.01"
+      rpy="0 0 -1.8377" />
+    <parent
+      link="link1R" />
+    <child
+      link="link2R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link3R">
+    <inertial>
+      <origin
+        xyz="-0.0106862513365432 0.0571823025304968 -0.00887815058461655"
+        rpy="0 0 0" />
+      <mass
+        value="0.0560073858489449" />
+      <inertia
+        ixx="0.000218764528266529"
+        ixy="3.93869721743741E-05"
+        ixz="-6.71436973865969E-07"
+        iyy="1.53648605332699E-05"
+        iyz="3.59287003090279E-06"
+        izz="0.000232080271062819" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link3R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.862745098039216 0.549019607843137 0.545098039215686 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link3R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint3R"
+    type="revolute">
+    <origin
+      xyz="-0.014696 -0.078639 0.01"
+      rpy="0 0 -1.7555" />
+    <parent
+      link="link2R" />
+    <child
+      link="link3R" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link4R">
+    <inertial>
+      <origin
+        xyz="0.0203083925778119 0.108670534850862 0.0087835512142474"
+        rpy="0 0 0" />
+      <mass
+        value="0.103303737580571" />
+      <inertia
+        ixx="0.00077356907171982"
+        ixy="-0.000141436809479367"
+        ixz="-1.62865032493035E-06"
+        iyy="4.31701995748644E-05"
+        iyz="-8.71493404596562E-06"
+        izz="0.00081280999513764" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.545098039215686 0.615686274509804 0.858823529411765 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint4R"
+    type="revolute">
+    <origin
+      xyz="-0.027555 0.14745 -0.01"
+      rpy="0 0 1.7555" />
+    <parent
+      link="link3R" />
+    <child
+      link="link4R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="wheelR">
+    <inertial>
+      <origin
+        xyz="7.49400541621981E-16 8.88178419700125E-16 0.0111042006258996"
+        rpy="0 0 0" />
+      <mass
+        value="0.126219698224412" />
+      <inertia
+        ixx="0.000106473363883807"
+        ixy="0"
+        ixz="2.50484313697451E-20"
+        iyy="0.000106473363883807"
+        iyz="2.64825220519381E-21"
+        izz="0.000208789081658998" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/wheelR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/wheelR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="wheeljointR"
+    type="continuous">
+    <origin
+      xyz="0.042251 0.22609 0.01"
+      rpy="0 0 1.386" />
+    <parent
+      link="link4R" />
+    <child
+      link="wheelR" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="link4_1R">
+    <inertial>
+      <origin
+        xyz="0.00561238240027687 0.0300319483626608 0.00878355121424738"
+        rpy="0 0 0" />
+      <mass
+        value="0.103303737580571" />
+      <inertia
+        ixx="0.000773569071719814"
+        ixy="-0.000141436809479382"
+        ixz="-1.62865032493053E-06"
+        iyy="4.31701995748703E-05"
+        iyz="-8.71493404596558E-06"
+        izz="0.000812809995137639" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4_1R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.545098039215686 0.615686274509804 0.858823529411765 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot_urdf2/meshes/link4_1R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint4_1R"
+    type="revolute">
+    <origin
+      xyz="-0.039556 -0.14469 0.01"
+      rpy="0 0 -1.8377" />
+    <parent
+      link="link1R" />
+    <child
+      link="link4_1R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>

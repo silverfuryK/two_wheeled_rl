@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="two_wheel_bot.SLDASM">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-2.14335328662538E-06 0.00381617057001103 0.00342348567006379"
+        rpy="0 0 0" />
+      <mass
+        value="5.2298658429766" />
+      <inertia
+        ixx="0.025489005982237"
+        ixy="-4.66611982918596E-08"
+        ixz="-5.21058705317477E-07"
+        iyy="0.0300096457219979"
+        iyz="0.00138741262174413"
+        izz="0.0217210539398496" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link1L">
+    <inertial>
+      <origin
+        xyz="0.0325592788604847 -0.0253254457611094 0.00778255875143551"
+        rpy="0 0 0" />
+      <mass
+        value="0.0920897104333794" />
+      <inertia
+        ixx="0.000144011368036084"
+        ixy="0.00014278590067962"
+        ixz="-6.6487194328281E-06"
+        iyy="0.000216519364635622"
+        iyz="5.17154523287915E-06"
+        izz="0.00035581745234253" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link1L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.647058823529412 0.854901960784314 0.533333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link1L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j1L"
+    type="revolute">
+    <origin
+      xyz="0.095 0 0"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="link1L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link2L">
+    <inertial>
+      <origin
+        xyz="0.0074274 0.027049 0.0085063"
+        rpy="0 0 0" />
+      <mass
+        value="0.042064" />
+      <inertia
+        ixx="5.7952E-05"
+        ixy="-1.396E-05"
+        ixz="-4.6668E-07"
+        iyy="1.0944E-05"
+        iyz="-1.6995E-06"
+        izz="6.7126E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link2L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.8549 0.80392 0.52941 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link2L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j2L"
+    type="revolute">
+    <origin
+      xyz="0 0 0.01"
+      rpy="0 0 -0.66107" />
+    <parent
+      link="link1L" />
+    <child
+      link="link2L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link3L">
+    <inertial>
+      <origin
+        xyz="0.015403 -0.056096 -0.0088782"
+        rpy="0 0 0" />
+      <mass
+        value="0.056007" />
+      <inertia
+        ixx="0.00021083"
+        ixy="5.5694E-05"
+        ixz="9.6782E-07"
+        iyy="2.3297E-05"
+        iyz="-3.5246E-06"
+        izz="0.00023208" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link3L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.86275 0.54902 0.5451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link3L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j3L"
+    type="revolute">
+    <origin
+      xyz="0.021183 0.077145 0.01"
+      rpy="0 0 1.3028" />
+    <parent
+      link="link2L" />
+    <child
+      link="link3L" />
+    <axis
+      xyz="0 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link4L">
+    <inertial>
+      <origin
+        xyz="-0.029273 -0.10661 0.0087836"
+        rpy="0 0 0" />
+      <mass
+        value="0.1033" />
+      <inertia
+        ixx="0.00074508"
+        ixy="-0.0002"
+        ixz="2.3476E-06"
+        iyy="7.1655E-05"
+        iyz="8.5494E-06"
+        izz="0.00081281" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.5451 0.61569 0.85882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j4L"
+    type="revolute">
+    <origin
+      xyz="0.039718 -0.14465 -0.01"
+      rpy="0 0 -1.3028" />
+    <parent
+      link="link3L" />
+    <child
+      link="link4L" />
+    <axis
+      xyz="0 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="wheelL">
+    <inertial>
+      <origin
+        xyz="-3.63598040564739E-14 2.77555756156289E-14 0.0111042006258998"
+        rpy="0 0 0" />
+      <mass
+        value="0.126219698224412" />
+      <inertia
+        ixx="0.000106473363883812"
+        ixy="0"
+        ixz="6.43067313318946E-23"
+        iyy="0.000106473363883812"
+        iyz="-4.80532148237026E-23"
+        izz="0.000208789081658998" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/wheelL.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/wheelL.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j5L"
+    type="revolute">
+    <origin
+      xyz="-0.060901 -0.22179 0.01"
+      rpy="0 0 -1.8388" />
+    <parent
+      link="link4L" />
+    <child
+      link="wheelL" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link4_1L">
+    <inertial>
+      <origin
+        xyz="-0.0080898 -0.029461 0.0087836"
+        rpy="0 0 0" />
+      <mass
+        value="0.1033" />
+      <inertia
+        ixx="0.00074508"
+        ixy="-0.0002"
+        ixz="2.3476E-06"
+        iyy="7.1655E-05"
+        iyz="8.5494E-06"
+        izz="0.00081281" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4_1L.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.5451 0.61569 0.85882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4_1L.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j4_1L"
+    type="revolute">
+    <origin
+      xyz="0.1184 -0.092095 0.01"
+      rpy="0 0 -0.66107" />
+    <parent
+      link="link1L" />
+    <child
+      link="link4_1L" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link1R">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link1R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link1R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j1R"
+    type="revolute">
+    <origin
+      xyz="-0.095 0 0"
+      rpy="1.5708 0 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="link1R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link2R">
+    <inertial>
+      <origin
+        xyz="0.0078885 -0.026918 0.0085063"
+        rpy="0 0 0" />
+      <mass
+        value="0.042064" />
+      <inertia
+        ixx="5.7461E-05"
+        ixy="1.4755E-05"
+        ixz="-4.9565E-07"
+        iyy="1.1435E-05"
+        iyz="1.6913E-06"
+        izz="6.7126E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link2R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.8549 0.80392 0.52941 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link2R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j2R"
+    type="revolute">
+    <origin
+      xyz="0 0 0.01"
+      rpy="0 0 -2.4679" />
+    <parent
+      link="link1R" />
+    <child
+      link="link2R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link3R">
+    <inertial>
+      <origin
+        xyz="0.01636 0.055825 -0.0088782"
+        rpy="0 0 0" />
+      <mass
+        value="0.056007" />
+      <inertia
+        ixx="0.00020887"
+        ixy="-5.8866E-05"
+        ixz="1.0279E-06"
+        iyy="2.5255E-05"
+        iyz="3.5076E-06"
+        izz="0.00023208" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link3R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.86275 0.54902 0.5451 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link3R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j3R"
+    type="revolute">
+    <origin
+      xyz="0.022498 -0.076771 0.01"
+      rpy="0 0 -1.2857" />
+    <parent
+      link="link2R" />
+    <child
+      link="link3R" />
+    <axis
+      xyz="0 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link4R">
+    <inertial>
+      <origin
+        xyz="-0.03109 0.10609 0.0087836"
+        rpy="0 0 0" />
+      <mass
+        value="0.1033" />
+      <inertia
+        ixx="0.00073805"
+        ixy="0.00021138"
+        ixz="2.4933E-06"
+        iyy="7.8685E-05"
+        iyz="-8.508E-06"
+        izz="0.00081281" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.5451 0.61569 0.85882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j4R"
+    type="revolute">
+    <origin
+      xyz="0.042184 0.14395 -0.01"
+      rpy="0 0 1.2857" />
+    <parent
+      link="link3R" />
+    <child
+      link="link4R" />
+    <axis
+      xyz="0 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="wheelR">
+    <inertial>
+      <origin
+        xyz="0 -5.5511E-17 0.011104"
+        rpy="0 0 0" />
+      <mass
+        value="0.12622" />
+      <inertia
+        ixx="0.00010647"
+        ixy="2.3717E-20"
+        ixz="5.0621E-23"
+        iyy="0.00010647"
+        iyz="-3.7456E-23"
+        izz="0.00020879" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/wheelR.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/wheelR.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j5R"
+    type="revolute">
+    <origin
+      xyz="-0.064682 0.22072 0.01"
+      rpy="0 0 1.8559" />
+    <parent
+      link="link4R" />
+    <child
+      link="wheelR" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link4_1R">
+    <inertial>
+      <origin
+        xyz="-0.068368 0.14395 -0.0012164"
+        rpy="0 0 0" />
+      <mass
+        value="0.1033" />
+      <inertia
+        ixx="1.6738E-05"
+        ixy="-4.142E-19"
+        ixz="8.8658E-06"
+        iyy="0.0008"
+        iyz="8.4703E-22"
+        izz="0.00081281" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4_1R.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.5451 0.61569 0.85882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://two_wheel_bot.SLDASM/meshes/link4_1R.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="j4_1R"
+    type="revolute">
+    <origin
+      xyz="-0.065479 0.045963 0.02"
+      rpy="0 0 2.5296" />
+    <parent
+      link="link1R" />
+    <child
+      link="link4_1R" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+</robot>
