@@ -14,7 +14,7 @@ p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 path = 'G:\\Robotics\\tw_wh2_1\\Python_scripts\\urdf\\'
-botId = p.loadURDF(path+"two_wheel_bot_urdf2.urdf", [0, 0, -0.3], useFixedBase= True)
+botId = p.loadURDF(path+"two_wheel_bot_urdf2.urdf", [0, 0, -0.3], useFixedBase= False)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, -0.3], useFixedBase=True)
 
