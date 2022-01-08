@@ -34,7 +34,7 @@ print(p.getBasePositionAndOrientation(botId))
 
 #print(params)
 
-jointFrictionForce = 0.0
+jointFrictionForce = 0.1
 #for joint in range(p.getNumJoints(botId)):
   #p.setJointMotorControl2(botId, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
