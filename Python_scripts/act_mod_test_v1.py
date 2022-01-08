@@ -14,7 +14,7 @@ p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 path = 'G:\\Robotics\\tw_wh2_1\\Python_scripts\\urdf\\'
-botId = p.loadURDF(path+"two_wheel_bot_urdf2.urdf", [0, 0, -0.3], useFixedBase= True)
+botId = p.loadURDF(path+"two_wheel_bot_urdf2.urdf", [0, 0, -0.3], useFixedBase= False)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, -0.3], useFixedBase=True)
 
@@ -34,7 +34,7 @@ print(p.getBasePositionAndOrientation(botId))
 
 #print(params)
 
-jointFrictionForce = 0.0
+jointFrictionForce = 0.1
 #for joint in range(p.getNumJoints(botId)):
   #p.setJointMotorControl2(botId, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
@@ -45,7 +45,7 @@ while (1):
   #time.sleep(2000)
   p.stepSimulation()
   p.setJointMotorControl2(botId, 0, p.POSITION_CONTROL, targetPosition = 0.785)
-  print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
-  #p.setGravity(0, 0, GRAVITY)
+  #print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
+  p.setGravity(0, 0, GRAVITY)
   time.sleep(1 / 240.)
 time.sleep(1000)
