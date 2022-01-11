@@ -22,6 +22,7 @@ p.resetBasePositionAndOrientation(botId, [0, 0, 0], [0, 0, 0, 1])
 kukaEndEffectorIndex = 6
 numJoints = p.getNumJoints(botId)
 print("joint = "+ str(numJoints))
+print("body = "+ str(p.getNumBodies()))
 #params = []
 print(p.getJointInfo(botId,0))
 print(p.getJointInfo(botId,1))
@@ -31,10 +32,13 @@ print(p.getJointInfo(botId,4))
 print(p.getJointInfo(botId,5))
 print(".   .")
 print(p.getBasePositionAndOrientation(botId))
+l = [p.getBodyInfo(0),p.getBodyInfo(1)]
+print(l)
+
 
 #print(params)
 
-jointFrictionForce = 0.1
+jointFrictionForce = 0.01
 #for joint in range(p.getNumJoints(botId)):
   #p.setJointMotorControl2(botId, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
@@ -46,6 +50,8 @@ while (1):
   p.stepSimulation()
   p.setJointMotorControl2(botId, 0, p.POSITION_CONTROL, targetPosition = 0.785)
   #print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
+  c = p.getContactPoints(0,1,1,1)
+  #print(c)
   p.setGravity(0, 0, GRAVITY)
   time.sleep(1 / 240.)
 time.sleep(1000)
