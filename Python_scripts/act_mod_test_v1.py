@@ -32,7 +32,8 @@ print(p.getJointInfo(botId,4))
 print(p.getJointInfo(botId,5))
 print(".   .")
 print(p.getBasePositionAndOrientation(botId))
-l = [p.getBodyInfo(0),p.getBodyInfo(1)]
+#l = [p.getBodyInfo(0),p.getBodyInfo(1)]
+l = p.getBodyInfo(botId)
 print(l)
 
 
@@ -50,8 +51,8 @@ while (1):
   p.stepSimulation()
   p.setJointMotorControl2(botId, 0, p.POSITION_CONTROL, targetPosition = 0.785)
   #print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
-  c = p.getContactPoints(0,1,1,1)
-  #print(c)
+  c = p.getContactPoints(0)
+  print(len(c))
   p.setGravity(0, 0, GRAVITY)
   time.sleep(1 / 240.)
 time.sleep(1000)
