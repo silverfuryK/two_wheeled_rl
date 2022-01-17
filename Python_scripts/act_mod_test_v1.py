@@ -13,8 +13,8 @@ import pybullet_data
 p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
-path = 'G:\\Robotics\\tw_wh2_1\\Python_scripts\\urdf\\'
-botId = p.loadURDF(path+"two_wheel_bot_urdf2.urdf", [0, 0, -0.3], useFixedBase= False)
+path = 'Python_scripts\\urdf\\two_wheel_bot_urdf2.urdf'
+botId = p.loadURDF(path, [0, 0, -0.3], useFixedBase= False)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, -0.3], useFixedBase=True)
 
@@ -49,10 +49,10 @@ time.sleep(2)
 while (1):
   #time.sleep(2000)
   p.stepSimulation()
-  p.setJointMotorControl2(botId, 0, p.POSITION_CONTROL, targetPosition = 0.785)
-  #print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
-  c = p.getContactPoints(0)
-  print(len(c))
+  #p.setJointMotorControl2(botId, 0, p.POSITION_CONTROL, targetPosition = 0.785)
+  print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
+  #c = p.getContactPoints(0)
+  #print(len(c))
   p.setGravity(0, 0, GRAVITY)
   time.sleep(1 / 240.)
 time.sleep(1000)

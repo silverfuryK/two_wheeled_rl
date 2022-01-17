@@ -11,3 +11,11 @@ class env:
         
         p.setGravity(0, 0, self.gravity)
 
+    def step_simulation(self):
+        p.stepSimulation()
+    
+    def observations(self):
+        pose = p.getBasePositionAndOrientation(self.botID)[0]
+        rpy = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])
+        
+
