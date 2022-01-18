@@ -13,10 +13,10 @@ import pybullet_data
 p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
-path = 'Python_scripts\\urdf\\two_wheel_bot_urdf2.urdf'
-botId = p.loadURDF(path, [0, 0, -0.3], useFixedBase= True)
+path = 'two_wheel_bot_urdf4\\urdf\\two_wheel_bot_urdf4.urdf'
+botId = p.loadURDF(path, [0, 0, 1], useFixedBase= True)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.loadURDF("plane.urdf", [0, 0, -0.3], useFixedBase=True)
+p.loadURDF("plane.urdf", [0, 0, -1], useFixedBase=True)
 
 p.resetBasePositionAndOrientation(botId, [0, 0, 0], [0, 0, 0, 1])
 kukaEndEffectorIndex = 6
@@ -50,15 +50,20 @@ time.sleep(2)
   #time.sleep(2000)
 p.stepSimulation()
 for i in range(6):
-  p.stepSimulation()
+  
   print(i)
   print(p.getEulerFromQuaternion(p.getLinkState(botId,i)[3]))
+  p.stepSimulation()
   p.setJointMotorControl2(botId, i, p.POSITION_CONTROL, targetPosition = math.pi/4)
+  p.stepSimulation()
   print(p.getEulerFromQuaternion(p.getLinkState(botId,i)[3]))
-time.sleep(1)
+  time.sleep(1)
 #print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
 #c = p.getContactPoints(0)
 #print(len(c))
 p.setGravity(0, 0, GRAVITY)
 time.sleep(1 / 240.)
 #time.sleep(1000)
+while (1):
+  p.stepSimulation()
+  time.sleep(1)
