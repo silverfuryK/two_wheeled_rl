@@ -14,11 +14,12 @@ p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 path = 'two_wheel_bot_urdf4\\urdf\\two_wheel_bot_urdf4.urdf'
-botId = p.loadURDF(path, [0, 0, 1], useFixedBase= True)
-p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.loadURDF("plane.urdf", [0, 0, -1], useFixedBase=True)
 
-p.resetBasePositionAndOrientation(botId, [0, 0, 0], [0, 0, 0, 1])
+p.setAdditionalSearchPath(pybullet_data.getDataPath())
+p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
+botId = p.loadURDF(path, [0, 0, 0.4], useFixedBase= False)
+
+p.resetBasePositionAndOrientation(botId, [0, 0, 0.4], [0, 0, 0, 1])
 kukaEndEffectorIndex = 6
 numJoints = p.getNumJoints(botId)
 print("joint = "+ str(numJoints))
