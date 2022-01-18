@@ -14,7 +14,7 @@ p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 path = 'Python_scripts\\urdf\\two_wheel_bot_urdf2.urdf'
-botId = p.loadURDF(path, [0, 0, -0.3], useFixedBase= False)
+botId = p.loadURDF(path, [0, 0, -0.3], useFixedBase= True)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, -0.3], useFixedBase=True)
 
@@ -24,12 +24,12 @@ numJoints = p.getNumJoints(botId)
 print("joint = "+ str(numJoints))
 print("body = "+ str(p.getNumBodies()))
 #params = []
-print(p.getJointInfo(botId,0))
-print(p.getJointInfo(botId,1))
-print(p.getJointInfo(botId,2))
-print(p.getJointInfo(botId,3))
-print(p.getJointInfo(botId,4))
-print(p.getJointInfo(botId,5))
+for n in range(0,6):
+  print(p.getJointInfo(botId,n))
+
+print(".   .")
+for n in range(0,6):
+  print(p.getLinkState(botId,n)[5])
 print(".   .")
 print(p.getBasePositionAndOrientation(botId))
 #l = [p.getBodyInfo(0),p.getBodyInfo(1)]
@@ -43,16 +43,22 @@ jointFrictionForce = 0.01
 #for joint in range(p.getNumJoints(botId)):
   #p.setJointMotorControl2(botId, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
-import time
+#import time
 p.setRealTimeSimulation(1)
 time.sleep(2)
-while (1):
+#while (1):
   #time.sleep(2000)
+p.stepSimulation()
+for i in range(6):
   p.stepSimulation()
-  #p.setJointMotorControl2(botId, 0, p.POSITION_CONTROL, targetPosition = 0.785)
-  print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
-  #c = p.getContactPoints(0)
-  #print(len(c))
-  p.setGravity(0, 0, GRAVITY)
-  time.sleep(1 / 240.)
-time.sleep(1000)
+  print(i)
+  print(p.getEulerFromQuaternion(p.getLinkState(botId,i)[3]))
+  p.setJointMotorControl2(botId, i, p.POSITION_CONTROL, targetPosition = math.pi/4)
+  print(p.getEulerFromQuaternion(p.getLinkState(botId,i)[3]))
+time.sleep(1)
+#print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
+#c = p.getContactPoints(0)
+#print(len(c))
+p.setGravity(0, 0, GRAVITY)
+time.sleep(1 / 240.)
+#time.sleep(1000)
