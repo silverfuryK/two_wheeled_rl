@@ -44,7 +44,7 @@ class env:
         l2_2 = self.link_len*math.cos((beta2))
         self.l1 = l1_1 + l1_2
         self.l2 = l2_1 + l2_2
-        return self.l1, self.l2
+        return [self.l1, self.l2]
 
     def get_leg_length1(self):
         alpha1 = -(p.getJointState(self.botID,0)[0])
@@ -83,14 +83,17 @@ class env:
 
         return
     
-    def set_leg_length1(self,l1,l2):
+    def set_leg_length1(self,x1,x2,y1,y2):
         #no lateral movement
-        l1 = -l1
-        l2 = -l2
-        b1 = math.acos((l1**2 - 2*self.link_len**2)/(2*self.link_len**2))
-        a1 = math.pi/2 - math.atan((self.link_len*math.sin(b1))/(self.link_len+self.link_len*math.cos(b1)))
-        b2 = math.acos((l2**2 - 2*self.link_len**2)/(2*self.link_len**2))
-        a2 = math.pi/2 - math.atan((self.link_len*math.sin(b2))/(self.link_len+self.link_len*math.cos(b2)))
+        x1 = x1
+        x2 = x2
+        y1 = -y1
+        y2 = -y2
+        b1 = math.acos((y1**2 + x1**2 - 2*self.link_len**2)/(2*self.link_len**2))
+        a1 = math.atan(y1/x1) - math.atan((self.link_len*math.sin(b1))/(self.link_len+self.link_len*math.cos(b1)))
+
+        b2 = math.acos((y2**2 + x2**2 - 2*self.link_len**2)/(2*self.link_len**2))
+        a2 = math.atan(y2/x2) - math.atan((self.link_len*math.sin(b2))/(self.link_len+self.link_len*math.cos(b2)))
 
         p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -a1)
         p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = -b1)
