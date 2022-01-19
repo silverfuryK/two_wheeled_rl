@@ -13,39 +13,63 @@ import pybullet_data
 p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
-path = 'G:\\Robotics\\tw_wh2_1\\Python_scripts\\urdf\\'
-botId = p.loadURDF(path+"two_wheel_bot_urdf2.urdf", [0, 0, -0.3], useFixedBase= False)
-p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.loadURDF("plane.urdf", [0, 0, -0.3], useFixedBase=True)
+path = 'two_wheel_bot_urdf4\\urdf\\two_wheel_bot_urdf4.urdf'
 
-p.resetBasePositionAndOrientation(botId, [0, 0, 0], [0, 0, 0, 1])
+p.setAdditionalSearchPath(pybullet_data.getDataPath())
+p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
+botId = p.loadURDF(path, [0, 0, 0.4], useFixedBase= True)
+
+p.resetBasePositionAndOrientation(botId, [0, 0, 0.4], [0, 0, 0, 1])
 kukaEndEffectorIndex = 6
 numJoints = p.getNumJoints(botId)
 print("joint = "+ str(numJoints))
+print("body = "+ str(p.getNumBodies()))
 #params = []
-print(p.getJointInfo(botId,0))
-print(p.getJointInfo(botId,1))
-print(p.getJointInfo(botId,2))
-print(p.getJointInfo(botId,3))
-print(p.getJointInfo(botId,4))
-print(p.getJointInfo(botId,5))
+for n in range(0,6):
+  print(p.getJointInfo(botId,n))
+
+print(".   .")
+for n in range(0,6):
+  print(p.getLinkState(botId,n)[5])
 print(".   .")
 print(p.getBasePositionAndOrientation(botId))
+#l = [p.getBodyInfo(0),p.getBodyInfo(1)]
+l = p.getBodyInfo(botId)
+print(l)
+
 
 #print(params)
 
-jointFrictionForce = 0.1
+jointFrictionForce = 0.01
 #for joint in range(p.getNumJoints(botId)):
   #p.setJointMotorControl2(botId, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
-import time
+#import time
 p.setRealTimeSimulation(1)
 time.sleep(2)
-while (1):
+#while (1):
   #time.sleep(2000)
+p.stepSimulation()
+for i in range(6):
+  target = math.pi/4
+  if i<3:
+    target = -target
+  
+  print(target)
+  
+  print(i)
+  print((p.getJointState(botId,i)[0]))
   p.stepSimulation()
-  p.setJointMotorControl2(botId, 0, p.POSITION_CONTROL, targetPosition = 0.785)
-  #print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
-  p.setGravity(0, 0, GRAVITY)
-  time.sleep(1 / 240.)
-time.sleep(1000)
+  p.setJointMotorControl2(botId, i, p.POSITION_CONTROL, targetPosition = target)
+  p.stepSimulation()
+  print((p.getJointState(botId,i)[0]))
+  time.sleep(1)
+#print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
+#c = p.getContactPoints(0)
+#print(len(c))
+p.setGravity(0, 0, GRAVITY)
+time.sleep(1 / 240.)
+#time.sleep(1000)
+while (1):
+  p.stepSimulation()
+  time.sleep(1)
