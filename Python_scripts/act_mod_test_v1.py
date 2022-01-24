@@ -45,7 +45,8 @@ jointFrictionForce = 0.01
 
 #import time
 p.setRealTimeSimulation(1)
-time.sleep(2)
+time.sleep(1/240)
+#time.sleep(2)
 #while (1):
   #time.sleep(2000)
 p.stepSimulation()
@@ -62,7 +63,8 @@ for i in range(6):
   p.setJointMotorControl2(botId, i, p.POSITION_CONTROL, targetPosition = target)
   p.stepSimulation()
   print((p.getJointState(botId,i)[0]))
-  time.sleep(1)
+  time.sleep(1/240)
+  #time.sleep(1)
 #print(p.getEulerFromQuaternion(p.getBasePositionAndOrientation(botId)[1]))
 #c = p.getContactPoints(0)
 #print(len(c))
@@ -71,4 +73,5 @@ time.sleep(1 / 240.)
 #time.sleep(1000)
 while (1):
   p.stepSimulation()
-  time.sleep(1)
+  time.sleep(1/240)
+  #time.sleep(1)
