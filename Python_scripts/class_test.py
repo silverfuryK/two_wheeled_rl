@@ -14,7 +14,7 @@ import pybullet_data
 p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
-path = 'two_wheel_bot_urdf4\\urdf\\two_wheel_bot_urdf4.urdf'
+path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 
