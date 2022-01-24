@@ -21,8 +21,8 @@ p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 env = env(path,dt,GRAVITY)
 x1_pathID = p.addUserDebugParameter("x1", 0.01,0.299,0.01)
 x2_pathID = p.addUserDebugParameter("x2", 0.01,0.299,0.01)
-y1_pathID = p.addUserDebugParameter("y1", 0.2,0.29,0.2)
-y2_pathID = p.addUserDebugParameter("y2", 0.2,0.29,0.2)
+y1_pathID = p.addUserDebugParameter("y1", 0.01,0.299,0.01)
+y2_pathID = p.addUserDebugParameter("y2", 0.01,0.299,0.01)
 
 while(1):
     x11 = p.readUserDebugParameter(x1_pathID)
