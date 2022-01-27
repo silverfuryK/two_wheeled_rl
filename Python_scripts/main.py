@@ -25,6 +25,28 @@ class env:
         joint5 = wheel_jointR
         
         """
+        #baselink pos
+        self.x_t = 0
+        self.y_t = 0
+        self.z_t = 0
+        self.xd_t = 0
+        self.yd_t = 0
+        self.zd_t = 0
+
+        #baselink rot
+        self.phi_t = 0
+        self.the_t = 0
+        self.shi_t = 0
+        self.phid_t = 0
+        self.thed_t = 0
+        self.shid_t = 0
+
+        #joint states
+
+        #joint vel
+
+
+        
         
         p.setGravity(0, 0, self.gravity)
 
@@ -111,6 +133,8 @@ class env:
     def observations(self):
         pose = p.getBasePositionAndOrientation(self.botID)[0]
         rpy = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])
+        body_pose_vel = p.getLinkState(self.botID,0,1)[6]
+        body_rot_vel = p.getLinkState(self.botID,0,1)[7]
 
 
 
