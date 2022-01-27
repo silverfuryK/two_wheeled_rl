@@ -42,12 +42,21 @@ class env:
         self.shid_t = 0
 
         #joint states
+        self.a1_t = 0
+        self.b1_t = 0
+        self.a2_t = 0
+        self.b2_t = 0
+        self.w1_t = 0
+        self.w2_t = 0
 
         #joint vel
+        self.a1d_t = 0
+        self.b1d_t = 0
+        self.a2d_t = 0
+        self.b2d_t = 0
+        self.w1d_t = 0
+        self.w2d_t = 0
 
-
-        
-        
         p.setGravity(0, 0, self.gravity)
 
     def get_leg_length(self):
@@ -131,10 +140,55 @@ class env:
         p.stepSimulation()
     
     def observations(self):
-        pose = p.getBasePositionAndOrientation(self.botID)[0]
-        rpy = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])
-        body_pose_vel = p.getLinkState(self.botID,0,1)[6]
-        body_rot_vel = p.getLinkState(self.botID,0,1)[7]
+
+        #baselink pos
+        self.x_t = p.getBasePositionAndOrientation(self.botID)[0][0]
+        self.y_t = p.getBasePositionAndOrientation(self.botID)[0][1]
+        self.z_t = p.getBasePositionAndOrientation(self.botID)[0][2]
+        self.xd_t = p.getLinkState(self.botID,0,1)[6][0]
+        self.yd_t = p.getLinkState(self.botID,0,1)[6][1]
+        self.zd_t = p.getLinkState(self.botID,0,1)[6][2]
+
+        #baselink rot
+        self.phi_t = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])[0]
+        self.the_t = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])[1]
+        self.shi_t = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])[2]
+        self.phid_t = p.getLinkState(self.botID,0,1)[7][0]
+        self.thed_t = p.getLinkState(self.botID,0,1)[7][1]
+        self.shid_t = p.getLinkState(self.botID,0,1)[7][2]
+
+        #joint states
+        self.a1_t = p.getJointState(self.botID,0)[0]
+        self.b1_t = p.getJointState(self.botID,1)[0]
+        self.a2_t = p.getJointState(self.botID,3)[0]
+        self.b2_t = p.getJointState(self.botID,4)[0]
+        self.w1_t = p.getJointState(self.botID,2)[0]
+        self.w2_t = p.getJointState(self.botID,5)[0]
+
+        #joint vel
+        self.a1d_t = p.getJointState(self.botID,0)[1]
+        self.b1d_t = p.getJointState(self.botID,1)[1]
+        self.a2d_t = p.getJointState(self.botID,3)[1]
+        self.b2d_t = p.getJointState(self.botID,4)[1]
+        self.w1d_t = p.getJointState(self.botID,2)[1]
+        self.w2d_t = p.getJointState(self.botID,5)[1]
+
+        self.obs_t = [self.x_t, self.y_t, self.z_t, self.xd_t, self.yd_t, self.zd_t,
+                        self.phi_t, self.the_t, self.shi_t, self.phid_t, self.thed_t, self.shid_t,
+                        self.a1_t, self.b1_t, self.a2_t, self.b2_t, self.w1_t, self.w2_t,
+                        self.a1d_t, self.b1d_t, self.a2d_t, self.b2d_t, self.w1d_t, self.w2d_t]
+        
+        return self.obs_t
+
+    def action_t(self, a1,b1,w1,a2,b2,w2):
+        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = a1)
+        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = b1)
+        p.setJointMotorControl2(self.botID, 2, p.VELOCITY_CONTROL, targetVelocity = w1, maxVelocity = 20)
+        p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = a2)
+        p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = b2)
+        p.setJointMotorControl2(self.botID, 3, p.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
+        
+        return
 
 
 
