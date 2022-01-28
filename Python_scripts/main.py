@@ -187,6 +187,10 @@ class env:
         p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = a2)
         p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = b2)
         p.setJointMotorControl2(self.botID, 3, p.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
+
+        return
+
+    def reward_t(self):
         
         return
 
