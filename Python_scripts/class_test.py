@@ -9,6 +9,8 @@ GRAVITY = -9.8
 dt = 1e-1
 iters = 2000
 
+pi = math.pi
+
 import pybullet_data
 
 p.connect(p.GUI)
@@ -19,6 +21,7 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 
 env = env(path,dt,GRAVITY)
+'''
 while(1):
 
     a = env.get_leg_length1()
@@ -28,3 +31,10 @@ while(1):
     a = env.get_leg_length1()
     print(a)
     time.sleep(1/10)
+'''
+while (1):
+
+    env.action_t(0,0,0.1,0,0,0.1)
+    env.step_simulation()
+    print(env.obs_t)
+    time.sleep(dt)

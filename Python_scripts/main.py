@@ -6,7 +6,10 @@ from datetime import datetime
 class env:
     def __init__(self,urdf_path, time_step, gravity):
 
-        self.botID = p.loadURDF(urdf_path, [0, 0, 0.4], useFixedBase= True)
+        self.botID = p.loadURDF(urdf_path, [0, 0, 0.4], useFixedBase= False)
+        p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
+        p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
+        p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
         #self.botID = botID
         self.time_step = time_step
         self.gravity = gravity
@@ -138,6 +141,7 @@ class env:
 
     def step_simulation(self):
         p.stepSimulation()
+        self.observations()
     
     def observations(self):
 
@@ -181,13 +185,24 @@ class env:
         return self.obs_t
 
     def action_t(self, a1,b1,w1,a2,b2,w2):
-        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = a1)
-        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = b1)
-        p.setJointMotorControl2(self.botID, 2, p.VELOCITY_CONTROL, targetVelocity = w1, maxVelocity = 20)
+        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -a1)
+        a1_eff = p.getJointState(self.botID,0)[3]
+        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = -b1)
+        b1_eff = p.getJointState(self.botID,1)[3]
+        p.setJointMotorControl2(self.botID, 2, p.VELOCITY_CONTROL, targetVelocity = -w1, maxVelocity = 20)
+        w1_eff = p.getJointState(self.botID,2)[3]
         p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = a2)
+        a2_eff = p.getJointState(self.botID,3)[3]
         p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = b2)
-        p.setJointMotorControl2(self.botID, 3, p.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
+        b2_eff = p.getJointState(self.botID,4)[3]
+        p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
+        w2_eff = p.getJointState(self.botID,5)[3]
+        self.actions = [a1_eff, b1_eff,w1_eff,a2_eff,b2_eff,w2_eff]
+        return self.actions
 
+    def trajectory(self, cmd_vel_x_lin, cmd_vel_z_rot):
+        self.targ_lin_vel = cmd_vel_x_lin
+        self.targ_rot_vel = cmd_vel_z_rot
         return
 
     def reward_t(self):
