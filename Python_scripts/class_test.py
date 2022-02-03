@@ -3,12 +3,12 @@ import time
 import math
 from datetime import datetime
 from main import env
-
+from traj import Trajectory
 
 GRAVITY = -9.8
 dt = 1e-1
 iters = 2000
-
+simu_time = 0.0
 pi = math.pi
 
 import pybullet_data
@@ -21,19 +21,26 @@ p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 
 env = env(path,dt,GRAVITY)
-'''
-while(1):
 
-    a = env.get_leg_length1()
-    print(a)
-    env.set_leg_length1(0.1,0.1,0.00001,0.00001)
-    env.step_simulation()
-    a = env.get_leg_length1()
-    print(a)
-    time.sleep(1/10)
-'''
-while (1):
+# trajectory
 
+file = [[ 0.0, 0.0 , 0.0],
+        [ 5.0, 1.0 , 0.0],
+        [10.0, 0.0 , 0.5],
+        [12.0, 2.0 , 0.0],
+        [17.0, 0.0 , 0.0],
+        [20.0, 0.0 , 0.0]]
+
+num_commands = len(file)
+trajec = Trajectory(file)
+timestep = 0.00
+time = 0.00
+total_timestep = 20/dt
+cmd_ptr = 0
+
+while timestep != total_timestep:
+
+    cmd_vel = trajec(time)
     env.action_t(0,0,0.1,0,0,0.1)
     env.step_simulation()
     print(env.obs_t)
