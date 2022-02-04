@@ -20,7 +20,6 @@ path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 
-env = env(path,dt,GRAVITY)
 
 # trajectory
 
@@ -38,10 +37,14 @@ time = 0.00
 total_timestep = 20/dt
 cmd_ptr = 0
 
+#env
+env = env(path,dt,GRAVITY,file,20.0)
+
+
 while timestep != total_timestep:
 
     cmd_vel = trajec(time)
-    env.action_t(0,0,0.1,0,0,0.1)
+    #env.action_t(0,0,0.1,0,0,0.1)
     env.step_simulation()
-    print(env.obs_t)
+    print(env.obs_t[2])
     time.sleep(dt)

@@ -21,7 +21,7 @@ class env:
         #traj info
         self.traj = Trajectory(traj_file)
         self.sim_time = 0.0
-        self.num_commands = len(self.traj)
+        self.num_commands = len(self.traj.file)
         self.total_timestep = end_time_traj/self.time_step
         self.curr_timestep = 0
         self.cmd_ptr = 0
@@ -274,7 +274,7 @@ class env:
         self.sim_time = self.sim_time + self.time_step
         self.curr_timestep = self.curr_timestep + 1
         p.stepSimulation()
-
+        self.check_reset(self.observations)
         return self.observations(), self.reward(self.observations, self.action, self.trajectory)
 
 
