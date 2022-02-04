@@ -6,8 +6,8 @@ from traj import Trajectory
 
 class env:
     def __init__(self,urdf_path, time_step, gravity, traj_file, end_time_traj):
-
-        self.botID = p.loadURDF(urdf_path, [0, 0, 0.4], useFixedBase= False)
+        self.botPath = urdf_path
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
         p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
@@ -23,6 +23,7 @@ class env:
         self.sim_time = 0.0
         self.num_commands = len(self.traj)
         self.total_timestep = end_time_traj/self.time_step
+        self.curr_timestep = 0
         self.cmd_ptr = 0
 
         self.cmd_lin_vel = 0.0
@@ -74,6 +75,21 @@ class env:
         p.setGravity(0, 0, self.gravity)
 
     def reset(self):
+
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
+        p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
+        p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
+        p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
+        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.0],p.getQuaternionFromEuler([0.0,0.0,0.0]))
+        '''
+        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = 0.0)
+        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = 0.0)
+        p.setJointMotorControl2(self.botID, 2, p.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
+        p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = 0.0)
+        p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = 0.0)
+        p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
+        '''
+
         self.obs_t =    [0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
@@ -198,7 +214,15 @@ class env:
         
         return self.obs_t
 
-    def action(self, a1,b1,w1,a2,b2,w2):
+    def action(self, observation):
+
+        a1 = observation[12]
+        b1 = observation[13]
+        w1 = observation[16]
+        a2 = observation[14]
+        b2 = observation[15]
+        w2 = observation[17]
+
         p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -a1)
         a1_eff = p.getJointState(self.botID,0)[3]
         p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = -b1)
@@ -235,10 +259,22 @@ class env:
 
         return total_rew
 
+    def done(self):
+        if self.curr_timestep == self.total_timestep:
+            return True
+        else:
+            return False
+
+    def check_reset(self, observation):
+        z_thresh = 0.0
+        if observation[2] <= z_thresh:
+            self.reset()
+
     def step_simulation(self):
         self.sim_time = self.sim_time + self.time_step
+        self.curr_timestep = self.curr_timestep + 1
         p.stepSimulation()
-        self.observations()
+
         return self.observations(), self.reward(self.observations, self.action, self.trajectory)
 
 
