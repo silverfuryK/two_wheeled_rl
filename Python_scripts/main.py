@@ -2,9 +2,10 @@ import pybullet as p
 import time
 import math
 from datetime import datetime
+from traj import Trajectory
 
 class env:
-    def __init__(self,urdf_path, time_step, gravity):
+    def __init__(self,urdf_path, time_step, gravity, traj_file, end_time_traj):
 
         self.botID = p.loadURDF(urdf_path, [0, 0, 0.4], useFixedBase= False)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
@@ -16,6 +17,16 @@ class env:
         self.link_len = 0.15
         self.l1 = 0
         self.l2 = 0
+
+        #traj info
+        self.traj = Trajectory(traj_file)
+        self.sim_time = 0.0
+        self.num_commands = len(self.traj)
+        self.total_timestep = end_time_traj/self.time_step
+        self.cmd_ptr = 0
+
+        self.cmd_lin_vel = 0.0
+        self.cmd_rot_vel = 0.0
 
         """
         JOINT INFO
@@ -61,6 +72,14 @@ class env:
         self.w2d_t = 0
 
         p.setGravity(0, 0, self.gravity)
+
+    def reset(self):
+        self.obs_t =    [0.0,0.0,0.0,0.0,0.0,0.0,
+                         0.0,0.0,0.0,0.0,0.0,0.0,
+                         0.0,0.0,0.0,0.0,0.0,0.0,
+                         0.0,0.0,0.0,0.0,0.0,0.0]
+        self.action_t = [0.0,0.0,0.0,0.0,0.0,0.0]
+        self.reward_t = 0.0
 
     def get_leg_length(self):
         alpha1 = -(p.getJointState(self.botID,0)[0])
@@ -137,11 +156,6 @@ class env:
 
 
         return
-
-
-    def step_simulation(self):
-        p.stepSimulation()
-        self.observations()
     
     def observations(self):
 
@@ -177,14 +191,14 @@ class env:
         self.w1d_t = p.getJointState(self.botID,2)[1]
         self.w2d_t = p.getJointState(self.botID,5)[1]
 
-        self.obs_t = [self.x_t, self.y_t, self.z_t, self.xd_t, self.yd_t, self.zd_t,
+        self.obs_t =    [self.x_t, self.y_t, self.z_t, self.xd_t, self.yd_t, self.zd_t,
                         self.phi_t, self.the_t, self.shi_t, self.phid_t, self.thed_t, self.shid_t,
                         self.a1_t, self.b1_t, self.a2_t, self.b2_t, self.w1_t, self.w2_t,
                         self.a1d_t, self.b1d_t, self.a2d_t, self.b2d_t, self.w1d_t, self.w2d_t]
         
         return self.obs_t
 
-    def action_t(self, a1,b1,w1,a2,b2,w2):
+    def action(self, a1,b1,w1,a2,b2,w2):
         p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -a1)
         a1_eff = p.getJointState(self.botID,0)[3]
         p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = -b1)
@@ -197,17 +211,35 @@ class env:
         b2_eff = p.getJointState(self.botID,4)[3]
         p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
         w2_eff = p.getJointState(self.botID,5)[3]
-        self.actions = [a1_eff, b1_eff,w1_eff,a2_eff,b2_eff,w2_eff]
-        return self.actions
+        self.action_t = [a1_eff, b1_eff,w1_eff,a2_eff,b2_eff,w2_eff]
+        return self.action_t
 
     def trajectory(self, cmd_vel_x_lin, cmd_vel_z_rot):
         self.targ_lin_vel = cmd_vel_x_lin
         self.targ_rot_vel = cmd_vel_z_rot
-        return
+        self.targ_pitch = 0.0
+        self.targ_roll = 0.0
+        self.targ_z = 0.0
+        return [self.targ_lin_vel,self.targ_rot_vel,self.targ_pitch,self.targ_roll,self.targ_z]
 
-    def reward_t(self):
-        
-        return
+    def reward(self,observation,actions,trajectory):
+        r_t = 0.1
+        rew_lin_vel = 0.0*(trajectory[0] - observation[3])
+        rew_rot_vel = 0.0*(trajectory[1] - observation[11])
+        rew_pitch = 0.0*(trajectory[2] - observation[7])
+        rew_roll = 0.0*(trajectory[3] - observation[6])
+        rew_z = 0.0*(trajectory[4] - observation [2])
+        rew_act = 0.0*sum(abs(actions))
+
+        total_rew = r_t - rew_lin_vel - rew_rot_vel - rew_pitch - rew_roll - rew_z - rew_act
+
+        return total_rew
+
+    def step_simulation(self):
+        self.sim_time = self.sim_time + self.time_step
+        p.stepSimulation()
+        self.observations()
+        return self.observations(), self.reward(self.observations, self.action, self.trajectory)
 
 
 
