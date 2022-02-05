@@ -94,8 +94,16 @@ class env:
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0]
-        self.action_t = [0.0,0.0,0.0,0.0,0.0,0.0]
+        self.effort_t = [0.0,0.0,0.0,0.0,0.0,0.0]
         self.reward_t = 0.0
+        self.sim_time = 0.0
+        self.curr_timestep = 0
+        self.cmd_ptr = 0
+
+        self.cmd_lin_vel = 0.0
+        self.cmd_rot_vel = 0.0
+
+        return
 
     def get_leg_length(self):
         alpha1 = -(p.getJointState(self.botID,0)[0])
@@ -214,14 +222,14 @@ class env:
         
         return self.obs_t
 
-    def action(self, observation):
+    def action(self, action_list = [0,0,0,0,0,0]):
 
-        a1 = observation[12]
-        b1 = observation[13]
-        w1 = observation[16]
-        a2 = observation[14]
-        b2 = observation[15]
-        w2 = observation[17]
+        a1 = action_list[0]
+        b1 = action_list[1]
+        w1 = action_list[2]
+        a2 = action_list[3]
+        b2 = action_list[4]
+        w2 = action_list[5]
 
         p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -a1)
         a1_eff = p.getJointState(self.botID,0)[3]
@@ -235,12 +243,13 @@ class env:
         b2_eff = p.getJointState(self.botID,4)[3]
         p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
         w2_eff = p.getJointState(self.botID,5)[3]
-        self.action_t = [a1_eff, b1_eff,w1_eff,a2_eff,b2_eff,w2_eff]
-        return self.action_t
+        self.effort_t = [a1_eff, b1_eff,w1_eff,a2_eff,b2_eff,w2_eff]
+        return 
 
-    def trajectory(self, cmd_vel_x_lin, cmd_vel_z_rot):
-        self.targ_lin_vel = cmd_vel_x_lin
-        self.targ_rot_vel = cmd_vel_z_rot
+    def trajectory(self):
+        self.targ_cmd_vel = self.traj.get_cmd_vel(self.sim_time)
+        self.targ_lin_vel = self.targ_cmd_vel[0]
+        self.targ_rot_vel = self.targ_cmd_vel[1]
         self.targ_pitch = 0.0
         self.targ_roll = 0.0
         self.targ_z = 0.0
@@ -253,7 +262,7 @@ class env:
         rew_pitch = 0.0*(trajectory[2] - observation[7])
         rew_roll = 0.0*(trajectory[3] - observation[6])
         rew_z = 0.0*(trajectory[4] - observation [2])
-        rew_act = 0.0*sum(abs(actions))
+        rew_act = 0.0*sum([abs(self.effort_t[0]), abs(self.effort_t[1]), abs(self.effort_t[2]), abs(self.effort_t[3]), abs(self.effort_t[4]), abs(self.effort_t[5])])
 
         total_rew = r_t - rew_lin_vel - rew_rot_vel - rew_pitch - rew_roll - rew_z - rew_act
 
@@ -274,8 +283,11 @@ class env:
         self.sim_time = self.sim_time + self.time_step
         self.curr_timestep = self.curr_timestep + 1
         p.stepSimulation()
-        self.check_reset(self.observations)
-        return self.observations(), self.reward(self.observations, self.action, self.trajectory)
+        self.observations()
+        self.done()
+
+        self.check_reset(self.obs_t)
+        return self.observations(), self.reward(self.observations(), self.action(), self.trajectory())
 
 
 

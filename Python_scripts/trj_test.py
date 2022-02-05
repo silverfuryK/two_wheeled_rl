@@ -28,4 +28,3 @@ while timestep != total_timestep:
 
 #plt.figure()
 plt.show()
-

@@ -33,7 +33,7 @@ file = [[ 0.0, 0.0 , 0.0],
 num_commands = len(file)
 trajec = Trajectory(file)
 timestep = 0.00
-time = 0.00
+sim_time = 0.00
 total_timestep = 20/dt
 cmd_ptr = 0
 
@@ -43,7 +43,7 @@ env = env(path,dt,GRAVITY,file,20.0)
 
 while timestep != total_timestep:
 
-    cmd_vel = trajec(time)
+    cmd_vel = trajec.get_cmd_vel(sim_time)
     #env.action_t(0,0,0.1,0,0,0.1)
     env.step_simulation()
     print(env.obs_t[2])
