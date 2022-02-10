@@ -3,11 +3,13 @@ import time
 import math
 from datetime import datetime
 from main import env
-
+from traj import Trajectory
 
 GRAVITY = -9.8
 dt = 1e-1
 iters = 2000
+simu_time = 0.0
+pi = math.pi
 
 import pybullet_data
 
@@ -18,23 +20,31 @@ path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 
-env = env(path,dt,GRAVITY)
-x1_pathID = p.addUserDebugParameter("x1", 0.01,0.299,0.01)
-x2_pathID = p.addUserDebugParameter("x2", 0.01,0.299,0.01)
-y1_pathID = p.addUserDebugParameter("y1", 0.01,0.299,0.01)
-y2_pathID = p.addUserDebugParameter("y2", 0.01,0.299,0.01)
 
-while(1):
-    x11 = p.readUserDebugParameter(x1_pathID)
-    x22 = p.readUserDebugParameter(x2_pathID)
-    y11 = p.readUserDebugParameter(y1_pathID)
-    y22 = p.readUserDebugParameter(y2_pathID)
+# trajectory
 
-    a = env.get_leg_length1()
-    #print(a)
-    env.set_leg_length1(x11,x22,y11,y22)
+file = [[ 0.0, 0.0 , 0.0],
+        [ 5.0, 1.0 , 0.0],
+        [10.0, 0.0 , 0.5],
+        [12.0, 2.0 , 0.0],
+        [17.0, 0.0 , 0.0],
+        [20.0, 0.0 , 0.0]]
+
+num_commands = len(file)
+trajec = Trajectory(file)
+timestep = 0.00
+sim_time = 0.00
+total_timestep = 20/dt
+cmd_ptr = 0
+
+#env
+env = env(path,dt,GRAVITY,file,20.0)
+
+
+while timestep != total_timestep:
+
+    cmd_vel = trajec.get_cmd_vel(sim_time)
+    #env.action_t(0,0,0.1,0,0,0.1)
     env.step_simulation()
-    a = env.get_leg_length1()
-    #print(a)
-    #print(1/10)
-    time.sleep(1/240)
+    print(env.obs_t[2])
+    time.sleep(dt)
