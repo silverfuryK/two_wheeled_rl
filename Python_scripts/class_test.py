@@ -44,10 +44,10 @@ env.reset()
 
 while timestep != total_timestep:
 
-    #cmd_vel = trajec.get_cmd_vel(sim_time)
+    cmd_vel = trajec.get_cmd_vel(sim_time)
     #print(cmd_vel)
-    #env.action_t(0,0,0.1,0,0,0.1)
-    
-    #observations, reward, done = env.step_simulation()
-    print(env.obs_t[2])
+    env.action([0,0,0.1,0,0,0.1])
+    #p.stepSimulation()
+    observations, reward, done = env.step_simulation()
+    #print(env.obs_t[2])
     time.sleep(dt)

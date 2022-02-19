@@ -83,7 +83,8 @@ class env:
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
         p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
-        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.0],p.getQuaternionFromEuler([0.0,0.0,0.0]))
+        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.45],p.getQuaternionFromEuler([0.0,0.0,0.0]))
+        p.setGravity(0, 0, self.gravity)
         '''
         p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = 0.0)
         p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = 0.0)
@@ -285,10 +286,11 @@ class env:
     def step_simulation(self):
         self.sim_time = self.sim_time + self.time_step
         self.curr_timestep = self.curr_timestep + 1
-        #p.stepSimulation()
+        p.stepSimulation()
         obs = self.observations()
         done_sig = self.done()
         rew = self.reward(self.observations(), self.action(), self.trajectory())
+        #rew = 0
         
 
         self.check_reset(self.obs_t)
