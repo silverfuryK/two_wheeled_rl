@@ -7,7 +7,8 @@ from traj import Trajectory
 class env:
     def __init__(self,urdf_path, time_step, gravity, traj_file, end_time_traj):
         self.botPath = urdf_path
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.45], useFixedBase= False)
+        p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
         p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
@@ -75,8 +76,10 @@ class env:
         p.setGravity(0, 0, self.gravity)
 
     def reset(self):
-
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
+        print("reset")
+        p.resetSimulation()
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.45], useFixedBase= False)
+        p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
         p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
@@ -282,12 +285,14 @@ class env:
     def step_simulation(self):
         self.sim_time = self.sim_time + self.time_step
         self.curr_timestep = self.curr_timestep + 1
-        p.stepSimulation()
-        self.observations()
-        self.done()
+        #p.stepSimulation()
+        obs = self.observations()
+        done_sig = self.done()
+        rew = self.reward(self.observations(), self.action(), self.trajectory())
+        
 
         self.check_reset(self.obs_t)
-        return self.observations(), self.reward(self.observations(), self.action(), self.trajectory())
+        return obs, rew, done_sig
 
 
 

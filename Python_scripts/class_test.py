@@ -18,7 +18,7 @@ p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
-p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
+#p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 
 
 # trajectory
@@ -39,12 +39,15 @@ cmd_ptr = 0
 
 #env
 env = env(path,dt,GRAVITY,file,20.0)
+env.reset()
 
 
 while timestep != total_timestep:
 
-    cmd_vel = trajec.get_cmd_vel(sim_time)
+    #cmd_vel = trajec.get_cmd_vel(sim_time)
+    #print(cmd_vel)
     #env.action_t(0,0,0.1,0,0,0.1)
-    env.step_simulation()
+    
+    #observations, reward, done = env.step_simulation()
     print(env.obs_t[2])
     time.sleep(dt)
