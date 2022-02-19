@@ -49,5 +49,6 @@ while timestep != total_timestep:
     env.action([0,0,0.1,0,0,0.1])
     #p.stepSimulation()
     observations, reward, done = env.step_simulation()
-    #print(env.obs_t[2])
+    #print([env.obs_t[2],env.obs_t[3],env.obs_t[6],env.obs_t[7],env.obs_t[11]])
+    print(env.reward_t)
     time.sleep(dt)

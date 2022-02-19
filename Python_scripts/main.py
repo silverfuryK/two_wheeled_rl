@@ -256,19 +256,20 @@ class env:
         self.targ_rot_vel = self.targ_cmd_vel[1]
         self.targ_pitch = 0.0
         self.targ_roll = 0.0
-        self.targ_z = 0.0
+        self.targ_z = 0.25
         return [self.targ_lin_vel,self.targ_rot_vel,self.targ_pitch,self.targ_roll,self.targ_z]
 
     def reward(self,observation,actions,trajectory):
         r_t = 0.1
-        rew_lin_vel = 0.0*(trajectory[0] - observation[3])
-        rew_rot_vel = 0.0*(trajectory[1] - observation[11])
-        rew_pitch = 0.0*(trajectory[2] - observation[7])
-        rew_roll = 0.0*(trajectory[3] - observation[6])
-        rew_z = 0.0*(trajectory[4] - observation [2])
-        rew_act = 0.0*sum([abs(self.effort_t[0]), abs(self.effort_t[1]), abs(self.effort_t[2]), abs(self.effort_t[3]), abs(self.effort_t[4]), abs(self.effort_t[5])])
+        rew_lin_vel = 10.0*(trajectory[0] - observation[3])
+        rew_rot_vel = 10.0*(trajectory[1] - observation[11])
+        rew_pitch = 0.5*(trajectory[2] - observation[7])
+        rew_roll = 0.5*(trajectory[3] - observation[6])
+        rew_z = 10.0*(trajectory[4] - observation [2])
+        rew_act = 1.0*sum([abs(self.effort_t[0]), abs(self.effort_t[1]), abs(self.effort_t[2]), abs(self.effort_t[3]), abs(self.effort_t[4]), abs(self.effort_t[5])])
 
         total_rew = r_t - rew_lin_vel - rew_rot_vel - rew_pitch - rew_roll - rew_z - rew_act
+        self.reward_t = total_rew
 
         return total_rew
 
