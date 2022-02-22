@@ -93,11 +93,12 @@ class env:
         p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = 0.0)
         p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
         '''
-
+        self.done_t = False
         self.obs_t =    [0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0]
+        self.obs_t = self.observations()
         self.effort_t = [0.0,0.0,0.0,0.0,0.0,0.0]
         self.reward_t = 0.0
         self.sim_time = 0.0
@@ -107,7 +108,7 @@ class env:
         self.cmd_lin_vel = 0.0
         self.cmd_rot_vel = 0.0
 
-        return
+        return self.obs_t
 
     def get_leg_length(self):
         alpha1 = -(p.getJointState(self.botID,0)[0])
@@ -251,7 +252,7 @@ class env:
         return 
 
     def trajectory(self):
-        self.targ_cmd_vel = self.traj.get_cmd_vel(self.sim_time)
+        self.targ_cmd_vel = self.traj.get_cmd_vel(self.curr_timestep)
         self.targ_lin_vel = self.targ_cmd_vel[0]
         self.targ_rot_vel = self.targ_cmd_vel[1]
         self.targ_pitch = 0.0
@@ -275,6 +276,7 @@ class env:
 
     def done(self):
         if self.curr_timestep == self.total_timestep:
+            self.done_t = True
             return True
         else:
             return False
@@ -289,13 +291,10 @@ class env:
         self.curr_timestep = self.curr_timestep + 1
         p.stepSimulation()
         obs = self.observations()
-        done_sig = self.done()
+        self.done_t = self.done()
         rew = self.reward(self.observations(), self.action(), self.trajectory())
-        #rew = 0
-        
-
         self.check_reset(self.obs_t)
-        return obs, rew, done_sig
+        return obs, rew, self.done_t
 
 
 
