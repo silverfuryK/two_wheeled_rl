@@ -15,7 +15,12 @@ class Trajectory:
         return
     
     def get_cmd_vel(self,timestep):
-        
+
+        for i in range(len(self.file)):
+            if timestep <= self.file[i][0]:
+                self.lin_vel = self.file[i-1][1]
+                self.rot_vel = self.file[i-1][2]
+        '''
         try:
             if timestep >= self.file[self.file_ptr][0] and timestep < self.file[self.file_ptr+1][0]:
                 self.lin_vel = self.file[self.file_ptr][1]
@@ -24,10 +29,11 @@ class Trajectory:
                 self.file_ptr = self.file_ptr + 1
                 self.lin_vel = self.file[self.file_ptr][1]
                 self.rot_vel = self.file[self.file_ptr][2]
-
+        
         except:
             self.lin_vel = self.file[self.file_ptr][1]
             self.rot_vel = self.file[self.file_ptr][2]
+        '''
         '''
         if self.curr_com != self.num_com:
             if timestep >= self.file[self.file_ptr][0] and timestep < self.file[self.file_ptr+1][0]:

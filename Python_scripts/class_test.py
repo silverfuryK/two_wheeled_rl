@@ -16,7 +16,8 @@ pi = math.pi
 
 import pybullet_data
 
-p.connect(p.GUI)
+#p.connect(p.GUI)
+p.connect(p.DIRECT)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
@@ -49,7 +50,7 @@ agent = NewAgent(alpha=0.000005, beta=0.00001, input_dims=[24], gamma=0.99,
 
 score_history = []
 i = 0
-tot_episodes = 500
+tot_episodes = 30
 for i in range(tot_episodes):
         observation = env.reset()
         done = False
@@ -66,9 +67,11 @@ for i in range(tot_episodes):
                 #print(done)
                 #print([env.obs_t[2],env.obs_t[3],env.obs_t[6],env.obs_t[7],env.obs_t[11]])
                 score += reward
-                score_history.append(score)
+                time.sleep(dt)
+        score_history.append(score)
         print('episode: ', i,'score: %.2f' % score)
+        print('sim time: ',env.sim_time,' reward: ',env.reward_t)
+        print(env.obs_t[2])
+        #print(env.reward_t)
         
-        print(env.reward_t)
-        #time.sleep(dt)
 plotLearning(score_history, filename = 'plot1.png', window=20)

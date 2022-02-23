@@ -7,7 +7,7 @@ from traj import Trajectory
 class env:
     def __init__(self,urdf_path, time_step, gravity, traj_file, end_time_traj):
         self.botPath = urdf_path
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.45], useFixedBase= False)
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
         p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
@@ -78,12 +78,12 @@ class env:
     def reset(self):
         print("reset")
         p.resetSimulation()
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.45], useFixedBase= False)
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
         p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
         p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
-        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.45],p.getQuaternionFromEuler([0.0,0.0,0.0]))
+        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.4],p.getQuaternionFromEuler([0.0,0.0,0.0]))
         p.setGravity(0, 0, self.gravity)
         '''
         p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = 0.0)
@@ -252,7 +252,7 @@ class env:
         return 
 
     def trajectory(self):
-        self.targ_cmd_vel = self.traj.get_cmd_vel(self.curr_timestep)
+        self.targ_cmd_vel = self.traj.get_cmd_vel(self.sim_time)
         self.targ_lin_vel = self.targ_cmd_vel[0]
         self.targ_rot_vel = self.targ_cmd_vel[1]
         self.targ_pitch = 0.0
