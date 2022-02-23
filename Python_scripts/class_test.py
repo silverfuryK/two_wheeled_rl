@@ -67,7 +67,7 @@ for i in range(tot_episodes):
                 #print(done)
                 #print([env.obs_t[2],env.obs_t[3],env.obs_t[6],env.obs_t[7],env.obs_t[11]])
                 score += reward
-                time.sleep(dt)
+                #time.sleep(dt)
         score_history.append(score)
         print('episode: ', i,'score: %.2f' % score)
         print('sim time: ',env.sim_time,' reward: ',env.reward_t)

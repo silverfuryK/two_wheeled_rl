@@ -76,7 +76,7 @@ class env:
         p.setGravity(0, 0, self.gravity)
 
     def reset(self):
-        print("reset")
+        #print("reset")
         p.resetSimulation()
         self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
         p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
@@ -282,9 +282,14 @@ class env:
             return False
 
     def check_reset(self, observation):
-        z_thresh = 0.0
+        z_thresh = 0.1
         if observation[2] <= z_thresh:
             self.reset()
+            self.done_t = True
+            return self.done_t
+        #else:
+        #    self.done_t = False
+        #    return self.done_t
 
     def step_simulation(self):
         self.sim_time = self.sim_time + self.time_step
