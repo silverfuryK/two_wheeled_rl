@@ -94,6 +94,7 @@ class env:
         p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
         '''
         self.done_t = False
+        self.act_t = [0.0,0.0,0.0,0.0,0.0,0.0]
         self.obs_t =    [0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
@@ -282,18 +283,19 @@ class env:
             return False
 
     def check_reset(self, observation):
-        z_thresh = 0.1
+        z_thresh = 0.12
         if observation[2] <= z_thresh:
-            self.reset()
+            #self.reset()
             self.done_t = True
             return self.done_t
         #else:
         #    self.done_t = False
         #    return self.done_t
 
-    def step_simulation(self):
+    def step_simulation(self,act_t):
         self.sim_time = self.sim_time + self.time_step
         self.curr_timestep = self.curr_timestep + 1
+        self.action(act_t)
         p.stepSimulation()
         obs = self.observations()
         self.done_t = self.done()

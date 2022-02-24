@@ -7,6 +7,7 @@ from traj import Trajectory
 from a_c_test_agent import NewAgent
 from utils import plotLearning
 import numpy as np
+from ddpg_ac import Agent
 
 GRAVITY = -9.8
 dt = 1e-1
@@ -45,33 +46,53 @@ cmd_ptr = 0
 env = env(path,dt,GRAVITY,file,20.0)
 env.reset()
 
-agent = NewAgent(alpha=0.000005, beta=0.00001, input_dims=[24], gamma=0.99,
-                  layer1_size=256, layer2_size=256)
+#agent = Agent(alpha=0.000005, beta=0.00001, input_dims=[24], gamma=0.99,
+#                  layer1_size=256, layer2_size=256, n_actions=6)
+agent = Agent(alpha=0.000025, beta=0.00025, input_dims=[24], tau=0.001, env=env,
+              batch_size=64,  layer1_size=400, layer2_size=300, n_actions=6)
+
+try: 
+        agent.load_models()
+        agent.check_actor_params()
+except:
+        print("no saved models found!!")
 
 score_history = []
 i = 0
-tot_episodes = 30
+tot_episodes = 20000
 for i in range(tot_episodes):
-        observation = env.reset()
+        obs = env.reset()
         done = False
         score = 0
         while not done:
+                '''
                 cmd_vel = trajec.get_cmd_vel(sim_time)
                 #print(cmd_vel)
                 #env.action([0,0,0.1,0,0,0.1])
                 action = np.array(agent.choose_action(observation)).reshape((1,))
+                print(action)
                 #p.stepSimulation()
-                observation_, reward, done = env.step_simulation()
+                observation_, reward, done = env.step_simulation(action)
                 agent.learn(observation, reward, observation_, done)
                 observation = observation_
                 #print(done)
                 #print([env.obs_t[2],env.obs_t[3],env.obs_t[6],env.obs_t[7],env.obs_t[11]])
                 score += reward
                 #time.sleep(dt)
+                '''
+                act = agent.choose_action(obs)
+                new_state, reward, done = env.step_simulation(act)
+                agent.remember(obs, act, reward, new_state, int(done))
+                agent.learn()
+                score += reward
+                obs = new_state
+                #env.render()
+                
         score_history.append(score)
-        print('episode: ', i,'score: %.2f' % score)
-        print('sim time: ',env.sim_time,' reward: ',env.reward_t)
-        print(env.obs_t[2])
+        print('episode: ', i,'score: %.2f' % score,'sim time: %.2f'% env.sim_time,' reward: ',env.reward_t)
+        #print('sim time: %.2f'% env.sim_time,' reward: ',env.reward_t)
+        #print(env.obs_t[2], env.action)
         #print(env.reward_t)
-        
+print(agent.actor.checkpoint_file)
+agent.save_models()      
 plotLearning(score_history, filename = 'plot1.png', window=20)

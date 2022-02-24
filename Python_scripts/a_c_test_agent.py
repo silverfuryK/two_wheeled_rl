@@ -70,8 +70,9 @@ class Agent(object):
         probs = action_probs.sample(sample_shape=T.Size([self.n_outputs]))
         self.log_probs = action_probs.log_prob(probs).to(self.actor.device)
         action = T.tanh(probs)
+        print(action)
 
-        return action.item()
+        return action
 
     def learn(self, state, reward, new_state, done):
         self.actor.optimizer.zero_grad()
@@ -110,7 +111,7 @@ class NewAgent(object):
         self.log_probs = action_probs.log_prob(probs).to(self.actor_critic.device)
         action = T.tanh(probs)
 
-        return action.item()
+        return action
 
     def learn(self, state, reward, new_state, done):
         self.actor_critic.optimizer.zero_grad()
