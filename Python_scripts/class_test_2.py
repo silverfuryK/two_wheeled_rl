@@ -10,7 +10,7 @@ import numpy as np
 from ddpg_ac import Agent
 
 GRAVITY = -9.8
-dt = 0.01
+dt = 1e-1
 iters = 2000
 simu_time = 0.0
 pi = math.pi
@@ -53,8 +53,8 @@ env.reset()
 
 agent = Agent(alpha=0.0025, beta=0.0025, input_dims=[24], tau=0.001, env=env,
               batch_size=64,  layer1_size=512, layer2_size=512, n_actions=6)
-
 agent.load_models()
+#agent.check_actor_params()
 '''
 try: 
         agent.load_models()
@@ -64,12 +64,14 @@ except:
 '''
 score_history = []
 i = 0
-tot_episodes = 30000
+tot_episodes = 1
+max_tp = 60*60*10*10*2
+tp = 0
 for i in range(tot_episodes):
         obs = env.reset()
         done = False
         score = 0
-        while not done:
+        while tp != max_tp:
                 '''
                 cmd_vel = trajec.get_cmd_vel(sim_time)
                 #print(cmd_vel)
@@ -86,7 +88,7 @@ for i in range(tot_episodes):
                 #time.sleep(dt)
                 '''
                 act = agent.choose_action(obs)
-                new_state, reward, done, sim_t = env.step_simulation(act)
+                new_state, reward, done = env.step_simulation(act)
                 #print(new_state)
                 agent.remember(obs, act, reward, new_state, int(done))
                 agent.learn()
@@ -95,8 +97,10 @@ for i in range(tot_episodes):
                 #time.sleep(dt)
                 #env.render()
                 
+                print('timestep: ', tp,'sim time: %.2f'% env.sim_time,' reward: ',env.reward_t)
+                tp = tp + 1
         score_history.append(score)
-        print('episode: ', i,'score: %.4f' % score,'sim time: %.4f'% sim_t,' reward: ',env.reward_t)
+        print('episode: ', i,'score: %.2f' % score,'sim time: %.2f'% env.sim_time,' reward: ',env.reward_t)
         #print('sim time: %.2f'% env.sim_time,' reward: ',env.reward_t)
         #print(env.obs_t, env.action)
         #print(env.reward_t)

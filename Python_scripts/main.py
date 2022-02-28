@@ -7,7 +7,7 @@ from traj import Trajectory
 class env:
     def __init__(self,urdf_path, time_step, gravity, traj_file, end_time_traj):
         self.botPath = urdf_path
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.35], useFixedBase= False)
         p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
@@ -78,7 +78,7 @@ class env:
     def reset(self):
         #print("reset")
         p.resetSimulation()
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.4], useFixedBase= False)
+        self.botID = p.loadURDF(self.botPath, [0, 0, 0.35], useFixedBase= False)
         p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
@@ -94,12 +94,14 @@ class env:
         p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
         '''
         self.done_t = False
+        self.file_end = False
         self.act_t = [0.0,0.0,0.0,0.0,0.0,0.0]
         self.obs_t =    [0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0,
                          0.0,0.0,0.0,0.0,0.0,0.0]
         self.obs_t = self.observations()
+        #print(self.obs_t)
         self.effort_t = [0.0,0.0,0.0,0.0,0.0,0.0]
         self.reward_t = 0.0
         self.sim_time = 0.0
@@ -253,7 +255,7 @@ class env:
         return 
 
     def trajectory(self):
-        self.targ_cmd_vel = self.traj.get_cmd_vel(self.sim_time)
+        self.targ_cmd_vel, self.file_end = self.traj.get_cmd_vel(self.sim_time)
         self.targ_lin_vel = self.targ_cmd_vel[0]
         self.targ_rot_vel = self.targ_cmd_vel[1]
         self.targ_pitch = 0.0
@@ -263,12 +265,12 @@ class env:
 
     def reward(self,observation,actions,trajectory):
         r_t = 0.1
-        rew_lin_vel = 10.0*(trajectory[0] - observation[3])
-        rew_rot_vel = 10.0*(trajectory[1] - observation[11])
-        rew_pitch = 0.5*(trajectory[2] - observation[7])
-        rew_roll = 0.5*(trajectory[3] - observation[6])
-        rew_z = 10.0*(trajectory[4] - observation [2])
-        rew_act = 1.0*sum([abs(self.effort_t[0]), abs(self.effort_t[1]), abs(self.effort_t[2]), abs(self.effort_t[3]), abs(self.effort_t[4]), abs(self.effort_t[5])])
+        rew_lin_vel = 20.0*(trajectory[0] - observation[3])
+        rew_rot_vel = 20.0*(trajectory[1] - observation[11])
+        rew_pitch = 1.0*(trajectory[2] - observation[7])
+        rew_roll = 1.0*(trajectory[3] - observation[6])
+        rew_z = 100.0*(trajectory[4] - observation [2])
+        rew_act = 0.05*sum([abs(self.effort_t[0]), abs(self.effort_t[1]), abs(self.effort_t[2]), abs(self.effort_t[3]), abs(self.effort_t[4]), abs(self.effort_t[5])])
 
         total_rew = r_t - rew_lin_vel - rew_rot_vel - rew_pitch - rew_roll - rew_z - rew_act
         self.reward_t = total_rew
@@ -285,23 +287,28 @@ class env:
     def check_reset(self, observation):
         z_thresh = 0.12
         if observation[2] <= z_thresh:
-            #self.reset()
+            self.reward_t = self.reward_t - 99
+            self.reset()
             self.done_t = True
-            return self.done_t
+        if self.file_end == True:
+            self.reset()
+            self.done_t = True
+        return self.done_t
         #else:
         #    self.done_t = False
         #    return self.done_t
 
     def step_simulation(self,act_t):
         self.sim_time = self.sim_time + self.time_step
+        sim_t = self.sim_time
         self.curr_timestep = self.curr_timestep + 1
         self.action(act_t)
         p.stepSimulation()
         obs = self.observations()
-        self.done_t = self.done()
         rew = self.reward(self.observations(), self.action(), self.trajectory())
+        self.done_t = self.done()
         self.check_reset(self.obs_t)
-        return obs, rew, self.done_t
+        return obs, rew, self.done_t, sim_t
 
 
 
