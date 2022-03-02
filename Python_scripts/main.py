@@ -83,7 +83,7 @@ class env:
         p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
         p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
         p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
-        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.4],p.getQuaternionFromEuler([0.0,0.0,0.0]))
+        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.4],p.getQuaternionFromEuler([0.0,0.0,math.pi]))
         p.setGravity(0, 0, self.gravity)
         '''
         p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = 0.0)
@@ -264,12 +264,12 @@ class env:
         return [self.targ_lin_vel,self.targ_rot_vel,self.targ_pitch,self.targ_roll,self.targ_z]
 
     def reward(self,observation,actions,trajectory):
-        r_t = 0.1
-        rew_lin_vel = 20.0*(trajectory[0] - observation[3])
-        rew_rot_vel = 20.0*(trajectory[1] - observation[11])
+        r_t = 0.01
+        rew_lin_vel = 1.0*(trajectory[0] - observation[3])
+        rew_rot_vel = 1.0*(trajectory[1] - observation[11])
         rew_pitch = 1.0*(trajectory[2] - observation[7])
         rew_roll = 1.0*(trajectory[3] - observation[6])
-        rew_z = 100.0*(trajectory[4] - observation [2])
+        rew_z = 10.0*(trajectory[4] - observation [2])
         rew_act = 0.05*sum([abs(self.effort_t[0]), abs(self.effort_t[1]), abs(self.effort_t[2]), abs(self.effort_t[3]), abs(self.effort_t[4]), abs(self.effort_t[5])])
 
         total_rew = r_t - rew_lin_vel - rew_rot_vel - rew_pitch - rew_roll - rew_z - rew_act
@@ -278,14 +278,27 @@ class env:
         return total_rew
 
     def done(self):
+        z_thresh = 0.12
         if self.curr_timestep == self.total_timestep:
             self.done_t = True
             return True
+        
+        elif self.obs_t[2] <= z_thresh:
+            self.reward_t = self.reward_t - 100
+            #self.reset()
+            self.done_t = True
+            return True
+        elif self.file_end == True:
+            #self.reset()
+            self.done_t = True
+            return True
+        
         else:
             return False
 
     def check_reset(self, observation):
         z_thresh = 0.12
+        '''
         if observation[2] <= z_thresh:
             self.reward_t = self.reward_t - 99
             self.reset()
@@ -297,6 +310,9 @@ class env:
         #else:
         #    self.done_t = False
         #    return self.done_t
+        '''
+        if self.done == True:
+            self.reset()
 
     def step_simulation(self,act_t):
         self.sim_time = self.sim_time + self.time_step

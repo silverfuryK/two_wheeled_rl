@@ -51,7 +51,7 @@ env.reset()
 
 #ddpg
 
-agent = Agent(alpha=0.0025, beta=0.0025, input_dims=[24], tau=0.001, env=env,
+agent = Agent(alpha=0.00025, beta=0.00025, input_dims=[24], tau=0.001, env=env,
               batch_size=64,  layer1_size=512, layer2_size=512, n_actions=6)
 
 agent.load_models()
@@ -64,7 +64,7 @@ except:
 '''
 score_history = []
 i = 0
-tot_episodes = 30000
+tot_episodes = 20000
 for i in range(tot_episodes):
         obs = env.reset()
         done = False
