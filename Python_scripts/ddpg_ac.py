@@ -95,6 +95,7 @@ class CriticNetwork(nn.Module):
 
         self.optimizer = optim.Adam(self.parameters(), lr=beta)
         self.device = T.device('cuda:0' if T.cuda.is_available() else 'cuda:1')
+        
 
         self.to(self.device)
 
@@ -201,7 +202,7 @@ class Agent(object):
                                            name='TargetCritic')
 
         self.noise = OUActionNoise(mu=np.zeros(n_actions))
-
+        print(T.cuda.is_available())
         self.update_network_parameters(tau=1)
 
     def choose_action(self, observation):

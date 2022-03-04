@@ -53,7 +53,7 @@ env.reset()
 
 agent = Agent(alpha=0.0025, beta=0.0025, input_dims=[24], tau=0.001, env=env,
               batch_size=64,  layer1_size=512, layer2_size=512, n_actions=6)
-agent.load_models()
+#agent.load_models()
 #agent.check_actor_params()
 '''
 try: 

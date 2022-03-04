@@ -17,8 +17,8 @@ pi = math.pi
 
 import pybullet_data
 
-p.connect(p.GUI)
-#p.connect(p.DIRECT)
+#p.connect(p.GUI)
+p.connect(p.DIRECT)
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
@@ -51,10 +51,10 @@ env.reset()
 
 #ddpg
 
-agent = Agent(alpha=0.00025, beta=0.00025, input_dims=[24], tau=0.001, env=env,
+agent = Agent(alpha=0.00025, beta=0.0005, input_dims=[24], tau=0.001, env=env,
               batch_size=64,  layer1_size=512, layer2_size=512, n_actions=6)
 
-agent.load_models()
+#agent.load_models()
 '''
 try: 
         agent.load_models()
@@ -64,7 +64,7 @@ except:
 '''
 score_history = []
 i = 0
-tot_episodes = 20000
+tot_episodes = 10000
 for i in range(tot_episodes):
         obs = env.reset()
         done = False
