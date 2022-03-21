@@ -150,6 +150,7 @@ class ActorNetwork(nn.Module):
         #f3 = 0.004
         f3 = 0.003
         self.mu = nn.Linear(self.fc2_dims, self.n_actions)
+        #self.mu = self.mu*10
         T.nn.init.uniform_(self.mu.weight.data, -f3, f3)
         T.nn.init.uniform_(self.mu.bias.data, -f3, f3)
         #self.mu.weight.data.uniform_(-f3, f3)
@@ -167,7 +168,7 @@ class ActorNetwork(nn.Module):
         x = self.fc2(x)
         x = self.bn2(x)
         x = F.relu(x)
-        x = T.tanh(self.mu(x))
+        x = T.tanh(self.mu(x)) * 10
 
         return x
 

@@ -3,17 +3,25 @@ import time
 import math
 from datetime import datetime
 from traj import Trajectory
+from future_sim_env import env_f
+import numpy as np
+from pybullet_utils import bullet_client
 import pybullet_data
 
 class env:
-    def __init__(self,urdf_path, time_step, gravity, traj_file, end_time_traj):
+    def __init__(self,client_render, urdf_path , time_step, gravity, traj_file, end_time_traj, N, n_obs, n_act):
+        if client_render == True:
+            self.p1 = bullet_client.BulletClient(connection_mode=p.GUI)
+        else:
+            self.p1 = bullet_client.BulletClient(connection_mode=p.DIRECT)
+        
         self.botPath = urdf_path
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.35], useFixedBase= False)
-        self.p2.setAdditionalSearchPath(pybullet_data.getDataPath())
-        p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
-        p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
-        p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
-        p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
+        self.botID = self.p1.loadURDF(self.botPath, [0, 0, 0.35], useFixedBase= False)
+        self.p1.setAdditionalSearchPath(pybullet_data.getDataPath())
+        self.p1.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
+        self.p1.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
+        self.p1.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
+        self.p1.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
         #self.botID = botID
         self.time_step = time_step
         self.gravity = gravity
@@ -75,25 +83,33 @@ class env:
         self.w1d_t = 0
         self.w2d_t = 0
 
-        p.setGravity(0, 0, self.gravity)
+        self.N = N
+        self.n_obs = n_obs
+        self.n_act = n_act
+
+        self.p1.setGravity(0, 0, self.gravity)
+
+        # init future_env
+        self.Env_f = env_f(True,self.botPath,self.time_step,self.gravity,self.N,24,6)
+        self.Env_f.reset()
 
     def reset(self):
         #print("reset")
-        p.resetSimulation()
-        self.botID = p.loadURDF(self.botPath, [0, 0, 0.35], useFixedBase= False)
-        p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
-        p.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
-        p.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
-        p.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
-        p.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.4],p.getQuaternionFromEuler([0.0,0.0,math.pi]))
-        p.setGravity(0, 0, self.gravity)
+        self.p1.resetSimulation()
+        self.botID = self.p1.loadURDF(self.botPath, [0, 0, 0.35], useFixedBase= False)
+        self.p1.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
+        self.p1.changeDynamics(self.botID,-1,lateralFriction = 0.2, restitution = 0.99)
+        self.p1.changeDynamics(self.botID,3,lateralFriction = 0.3, restitution = 0.90)
+        self.p1.changeDynamics(self.botID,6,lateralFriction = 0.3, restitution = 0.90)
+        self.p1.resetBasePositionAndOrientation(self.botID,[0.0,0.0,0.4],self.p1.getQuaternionFromEuler([0.0,0.0,math.pi]))
+        self.p1.setGravity(0, 0, self.gravity)
         '''
-        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = 0.0)
-        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = 0.0)
-        p.setJointMotorControl2(self.botID, 2, p.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
-        p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = 0.0)
-        p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = 0.0)
-        p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
+        self.p1.setJointMotorControl2(self.botID, 0, self.p1.POSITION_CONTROL, targetPosition = 0.0)
+        self.p1.setJointMotorControl2(self.botID, 1, self.p1.POSITION_CONTROL, targetPosition = 0.0)
+        self.p1.setJointMotorControl2(self.botID, 2, self.p1.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
+        self.p1.setJointMotorControl2(self.botID, 3, self.p1.POSITION_CONTROL, targetPosition = 0.0)
+        self.p1.setJointMotorControl2(self.botID, 4, self.p1.POSITION_CONTROL, targetPosition = 0.0)
+        self.p1.setJointMotorControl2(self.botID, 5, self.p1.VELOCITY_CONTROL, targetVelocity = 0.0, maxVelocity = 20)
         '''
         self.done_t = False
         self.file_end = False
@@ -113,16 +129,18 @@ class env:
         self.cmd_lin_vel = 0.0
         self.cmd_rot_vel = 0.0
 
+        self.future_state_buffer = np.empty((self.N,(self.n_obs + self.n_act)))
+
         return self.obs_t
 
     def get_leg_length(self):
-        alpha1 = -(p.getJointState(self.botID,0)[0])
+        alpha1 = -(self.p1.getJointState(self.botID,0)[0])
         #print(alpha1)
-        beta1 = -(p.getJointState(self.botID,1)[0] + abs(alpha1))
+        beta1 = -(self.p1.getJointState(self.botID,1)[0] + abs(alpha1))
         #print(beta1)
-        alpha2 = (p.getJointState(self.botID,3)[0])
+        alpha2 = (self.p1.getJointState(self.botID,3)[0])
         #print(alpha2)
-        beta2 = (p.getJointState(self.botID,4)[0] - alpha2)
+        beta2 = (self.p1.getJointState(self.botID,4)[0] - alpha2)
         #print(beta2)
         self.link_len = 0.15
         l1_1 = self.link_len*math.cos(-(alpha1))
@@ -134,13 +152,13 @@ class env:
         return [self.l1, self.l2]
 
     def get_leg_length1(self):
-        alpha1 = -(p.getJointState(self.botID,0)[0])
+        alpha1 = -(self.p1.getJointState(self.botID,0)[0])
         #print(alpha1)
-        beta1 = -(p.getJointState(self.botID,1)[0])
+        beta1 = -(self.p1.getJointState(self.botID,1)[0])
         #print(beta1)
-        alpha2 = (p.getJointState(self.botID,3)[0])
+        alpha2 = (self.p1.getJointState(self.botID,3)[0])
         #print(alpha2)
-        beta2 = (p.getJointState(self.botID,4)[0])
+        beta2 = (self.p1.getJointState(self.botID,4)[0])
         #print(beta2)
 
         x1 = self.link_len*math.cos(alpha1) + self.link_len*math.cos(beta1)
@@ -162,11 +180,11 @@ class env:
         alpha2 = math.acos(l2_1/self.link_len)
         beta2 = 2*alpha2
 
-        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -alpha1)
-        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = -beta1)
+        self.p1.setJointMotorControl2(self.botID, 0, self.p1.POSITION_CONTROL, targetPosition = -alpha1)
+        self.p1.setJointMotorControl2(self.botID, 1, self.p1.POSITION_CONTROL, targetPosition = -beta1)
 
-        p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = alpha2)
-        p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = beta2)
+        self.p1.setJointMotorControl2(self.botID, 3, self.p1.POSITION_CONTROL, targetPosition = alpha2)
+        self.p1.setJointMotorControl2(self.botID, 4, self.p1.POSITION_CONTROL, targetPosition = beta2)
 
         return
     
@@ -182,11 +200,11 @@ class env:
         b2 = math.acos((y2**2 + x2**2 - 2*self.link_len**2)/(2*self.link_len**2))
         a2 = math.atan(y2/x2) - math.atan((self.link_len*math.sin(b2))/(self.link_len+self.link_len*math.cos(b2)))
 
-        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -a1)
-        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = -b1)
+        self.p1.setJointMotorControl2(self.botID, 0, self.p1.POSITION_CONTROL, targetPosition = -a1)
+        self.p1.setJointMotorControl2(self.botID, 1, self.p1.POSITION_CONTROL, targetPosition = -b1)
 
-        p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = a2)
-        p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = b2)
+        self.p1.setJointMotorControl2(self.botID, 3, self.p1.POSITION_CONTROL, targetPosition = a2)
+        self.p1.setJointMotorControl2(self.botID, 4, self.p1.POSITION_CONTROL, targetPosition = b2)
 
 
         return
@@ -194,36 +212,36 @@ class env:
     def observations(self):
 
         #baselink pos
-        self.x_t = p.getBasePositionAndOrientation(self.botID)[0][0]
-        self.y_t = p.getBasePositionAndOrientation(self.botID)[0][1]
-        self.z_t = p.getBasePositionAndOrientation(self.botID)[0][2]
-        self.xd_t = p.getLinkState(self.botID,0,1)[6][0]
-        self.yd_t = p.getLinkState(self.botID,0,1)[6][1]
-        self.zd_t = p.getLinkState(self.botID,0,1)[6][2]
+        self.x_t = self.p1.getBasePositionAndOrientation(self.botID)[0][0]
+        self.y_t = self.p1.getBasePositionAndOrientation(self.botID)[0][1]
+        self.z_t = self.p1.getBasePositionAndOrientation(self.botID)[0][2]
+        self.xd_t = self.p1.getLinkState(self.botID,0,1)[6][0]
+        self.yd_t = self.p1.getLinkState(self.botID,0,1)[6][1]
+        self.zd_t = self.p1.getLinkState(self.botID,0,1)[6][2]
 
         #baselink rot
-        self.phi_t = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])[0]
-        self.the_t = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])[1]
-        self.shi_t = p.getEulerFromQuaternion(p.getBasePositionAndOrientation(self.botID)[1])[2]
-        self.phid_t = p.getLinkState(self.botID,0,1)[7][0]
-        self.thed_t = p.getLinkState(self.botID,0,1)[7][1]
-        self.shid_t = p.getLinkState(self.botID,0,1)[7][2]
+        self.phi_t = self.p1.getEulerFromQuaternion(self.p1.getBasePositionAndOrientation(self.botID)[1])[0]
+        self.the_t = self.p1.getEulerFromQuaternion(self.p1.getBasePositionAndOrientation(self.botID)[1])[1]
+        self.shi_t = self.p1.getEulerFromQuaternion(self.p1.getBasePositionAndOrientation(self.botID)[1])[2]
+        self.phid_t = self.p1.getLinkState(self.botID,0,1)[7][0]
+        self.thed_t = self.p1.getLinkState(self.botID,0,1)[7][1]
+        self.shid_t = self.p1.getLinkState(self.botID,0,1)[7][2]
 
         #joint states
-        self.a1_t = p.getJointState(self.botID,0)[0]
-        self.b1_t = p.getJointState(self.botID,1)[0]
-        self.a2_t = p.getJointState(self.botID,3)[0]
-        self.b2_t = p.getJointState(self.botID,4)[0]
-        self.w1_t = p.getJointState(self.botID,2)[0]
-        self.w2_t = p.getJointState(self.botID,5)[0]
+        self.a1_t = self.p1.getJointState(self.botID,0)[0]
+        self.b1_t = self.p1.getJointState(self.botID,1)[0]
+        self.a2_t = self.p1.getJointState(self.botID,3)[0]
+        self.b2_t = self.p1.getJointState(self.botID,4)[0]
+        self.w1_t = self.p1.getJointState(self.botID,2)[0]
+        self.w2_t = self.p1.getJointState(self.botID,5)[0]
 
         #joint vel
-        self.a1d_t = p.getJointState(self.botID,0)[1]
-        self.b1d_t = p.getJointState(self.botID,1)[1]
-        self.a2d_t = p.getJointState(self.botID,3)[1]
-        self.b2d_t = p.getJointState(self.botID,4)[1]
-        self.w1d_t = p.getJointState(self.botID,2)[1]
-        self.w2d_t = p.getJointState(self.botID,5)[1]
+        self.a1d_t = self.p1.getJointState(self.botID,0)[1]
+        self.b1d_t = self.p1.getJointState(self.botID,1)[1]
+        self.a2d_t = self.p1.getJointState(self.botID,3)[1]
+        self.b2d_t = self.p1.getJointState(self.botID,4)[1]
+        self.w1d_t = self.p1.getJointState(self.botID,2)[1]
+        self.w2d_t = self.p1.getJointState(self.botID,5)[1]
 
         self.obs_t =    [self.x_t, self.y_t, self.z_t, self.xd_t, self.yd_t, self.zd_t,
                         self.phi_t, self.the_t, self.shi_t, self.phid_t, self.thed_t, self.shid_t,
@@ -241,18 +259,18 @@ class env:
         b2 = action_list[4]
         w2 = action_list[5]
 
-        p.setJointMotorControl2(self.botID, 0, p.POSITION_CONTROL, targetPosition = -a1)
-        a1_eff = p.getJointState(self.botID,0)[3]
-        p.setJointMotorControl2(self.botID, 1, p.POSITION_CONTROL, targetPosition = -b1)
-        b1_eff = p.getJointState(self.botID,1)[3]
-        p.setJointMotorControl2(self.botID, 2, p.VELOCITY_CONTROL, targetVelocity = -w1, maxVelocity = 20)
-        w1_eff = p.getJointState(self.botID,2)[3]
-        p.setJointMotorControl2(self.botID, 3, p.POSITION_CONTROL, targetPosition = a2)
-        a2_eff = p.getJointState(self.botID,3)[3]
-        p.setJointMotorControl2(self.botID, 4, p.POSITION_CONTROL, targetPosition = b2)
-        b2_eff = p.getJointState(self.botID,4)[3]
-        p.setJointMotorControl2(self.botID, 5, p.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
-        w2_eff = p.getJointState(self.botID,5)[3]
+        self.p1.setJointMotorControl2(self.botID, 0, self.p1.POSITION_CONTROL, targetPosition = -a1)
+        a1_eff = self.p1.getJointState(self.botID,0)[3]
+        self.p1.setJointMotorControl2(self.botID, 1, self.p1.POSITION_CONTROL, targetPosition = -b1)
+        b1_eff = self.p1.getJointState(self.botID,1)[3]
+        self.p1.setJointMotorControl2(self.botID, 2, self.p1.VELOCITY_CONTROL, targetVelocity = -w1, maxVelocity = 20)
+        w1_eff = self.p1.getJointState(self.botID,2)[3]
+        self.p1.setJointMotorControl2(self.botID, 3, self.p1.POSITION_CONTROL, targetPosition = a2)
+        a2_eff = self.p1.getJointState(self.botID,3)[3]
+        self.p1.setJointMotorControl2(self.botID, 4, self.p1.POSITION_CONTROL, targetPosition = b2)
+        b2_eff = self.p1.getJointState(self.botID,4)[3]
+        self.p1.setJointMotorControl2(self.botID, 5, self.p1.VELOCITY_CONTROL, targetVelocity = w2, maxVelocity = 20)
+        w2_eff = self.p1.getJointState(self.botID,5)[3]
         self.effort_t = [a1_eff, b1_eff,w1_eff,a2_eff,b2_eff,w2_eff]
         return 
 
@@ -300,6 +318,7 @@ class env:
 
     def check_reset(self, observation):
         z_thresh = 0.12
+        
         '''
         if observation[2] <= z_thresh:
             self.reward_t = self.reward_t - 99
@@ -313,20 +332,34 @@ class env:
         #    self.done_t = False
         #    return self.done_t
         '''
+
         if self.done == True:
             self.reset()
 
     def step_simulation(self,act_t):
+        ## update for n step
         self.sim_time = self.sim_time + self.time_step
         sim_t = self.sim_time
         self.curr_timestep = self.curr_timestep + 1
         self.action(act_t)
-        p.stepSimulation()
+        self.p1.stepSimulation()
         obs = self.observations()
         rew = self.reward(self.observations(), self.action(), self.trajectory())
         self.done_t = self.done()
         self.check_reset(self.obs_t)
-        return obs, rew, self.done_t, sim_t
+        self.set_future_states(obs,act_t)
+        self.step_n_future_states()
+        return obs, rew, self.done_t, sim_t, self.future_state_buffer
+
+    def set_future_states(self,obs,act):
+        self.Env_f.set_states(obs,act)
+        return
+    
+    def step_n_future_states(self):
+        self.future_state_buffer = self.Env_f.step_n()
+        
+        return
+        
 
 
 

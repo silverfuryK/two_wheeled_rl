@@ -51,10 +51,10 @@ env.reset()
 
 #ddpg
 
-agent = Agent(alpha=0.00025, beta=0.0005, input_dims=[24], tau=0.001, env=env,
+agent = Agent(alpha=0.00005, beta=0.00005, input_dims=[24], tau=0.001, env=env,
               batch_size=64,  layer1_size=512, layer2_size=512, n_actions=6)
 
-#agent.load_models()
+agent.load_models()
 '''
 try: 
         agent.load_models()
@@ -64,7 +64,7 @@ except:
 '''
 score_history = []
 i = 0
-tot_episodes = 10000
+tot_episodes = 50000
 for i in range(tot_episodes):
         obs = env.reset()
         done = False
@@ -100,7 +100,9 @@ for i in range(tot_episodes):
         #print('sim time: %.2f'% env.sim_time,' reward: ',env.reward_t)
         #print(env.obs_t, env.action)
         #print(env.reward_t)
-print(agent.actor.checkpoint_file)
+        if i % 1000 == 0:
+                agent.save_models()
+#print(agent.actor.checkpoint_file)
 agent.save_models()      
 plotLearning(score_history, filename = 'plot1.png', window=20)
 print("DONE lol")

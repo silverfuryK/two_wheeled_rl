@@ -10,13 +10,15 @@ iters = 2000
 #clid = p.connect(p.SHARED_MEMORY)
 import pybullet_data
 
+
 p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
+#print(p._client)
 p.setTimeStep(dt)
 path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
-botId = p.loadURDF(path, [0, 0, 0.4], useFixedBase= False)
+botId = p.loadURDF(path, [0, 0, 0.4], useFixedBase= True)
 
 p.resetBasePositionAndOrientation(botId, [0, 0, 0.4], [0, 0, 0, 1])
 kukaEndEffectorIndex = 6
