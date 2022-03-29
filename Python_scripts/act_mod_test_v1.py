@@ -15,7 +15,7 @@ p.connect(p.GUI)
 p.setGravity(0, 0, GRAVITY)
 #print(p._client)
 p.setTimeStep(dt)
-path = 'two_wheel_bot_urdf4/urdf/two_wheel_bot_urdf4.urdf'
+path = 'two_wheel_bot_urdf5/urdf/two_wheel_bot_urdf5.urdf'
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.loadURDF("plane.urdf", [0, 0, 0], useFixedBase=True)
 botId = p.loadURDF(path, [0, 0, 0.4], useFixedBase= True)
