@@ -93,6 +93,7 @@ for i in range(num_envs):
     pose = gymapi.Transform()
     pose.p = gymapi.Vec3(0.0, 1.0, 0.0)
     pose.r = gymapi.Quat(-0.707107, 0.0, 0.0, 0.707107)
+
     ahandle = gym.create_actor(env, asset, pose, "ant", i, 1)
     actor_handles.append(ahandle)
 
@@ -121,7 +122,7 @@ for i in range(20):
 
     # set each projectile to a different, random color
     c = 0.5 + 0.5 * np.random.random(3)
-    gym.set_rigid_body_color(proj_env, ahandle, 0, gymapi.MESH_VISUAL_AND_COLLISION, gymapi.Vec3(c[0], c[1], c[2]))
+    #gym.set_rigid_body_color(proj_env, ahandle, 0, gymapi.MESH_VISUAL_AND_COLLISION, gymapi.Vec3(c[0], c[1], c[2]))
 
     projectiles.append(ahandle)
 

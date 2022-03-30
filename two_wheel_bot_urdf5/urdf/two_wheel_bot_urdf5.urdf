@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/base_link.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -40,7 +40,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/base_link.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link1L.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link1L.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link1L.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link1L.STL" />
       </geometry>
     </collision>
   </link>
@@ -99,8 +99,8 @@
     <limit
       lower="-1.570793"
       upper="1.570793"
-      effort="0"
-      velocity="0" />
+      effort="1.0E-21"
+      velocity="1.0E-21" />
   </joint>
   <link
     name="link2L">
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link2L.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link2L.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link2L.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link2L.STL" />
       </geometry>
     </collision>
   </link>
@@ -157,8 +157,8 @@
     <limit
       lower="-1.5708"
       upper="1.5708"
-      effort="0"
-      velocity="0" />
+      effort="1.0E-21"
+      velocity="1.0E-21" />
   </joint>
   <link
     name="wheelL">
@@ -182,7 +182,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/wheelL.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/wheelL.STL" />
       </geometry>
       <material
         name="">
@@ -196,7 +196,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/wheelL.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/wheelL.STL" />
       </geometry>
     </collision>
   </link>
@@ -235,7 +235,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link1R.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link1R.STL" />
       </geometry>
       <material
         name="">
@@ -249,7 +249,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link1R.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link1R.STL" />
       </geometry>
     </collision>
   </link>
@@ -268,8 +268,8 @@
     <limit
       lower="-1.570793"
       upper="1.570793"
-      effort="0"
-      velocity="0" />
+      effort="1.0E-21"
+      velocity="1.0E-21" />
   </joint>
   <link
     name="link2R">
@@ -293,7 +293,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link2R.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link2R.STL" />
       </geometry>
       <material
         name="">
@@ -307,7 +307,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/link2R.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/link2R.STL" />
       </geometry>
     </collision>
   </link>
@@ -326,8 +326,8 @@
     <limit
       lower="-1.5708"
       upper="1.5708"
-      effort="0"
-      velocity="0" />
+      effort="1.0E-21"
+      velocity="1.0E-21" />
   </joint>
   <link
     name="wheelR">
@@ -351,7 +351,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/wheelR.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/wheelR.STL" />
       </geometry>
       <material
         name="">
@@ -365,7 +365,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://two_wheel_bot_urdf5/meshes/wheelR.obj" />
+          filename="package://two_wheel_bot_urdf5/meshes/wheelR.STL" />
       </geometry>
     </collision>
   </link>
